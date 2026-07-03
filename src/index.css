@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-light: #FAF9F6;
+  --color-text-light: #2E2C29;
+  --color-accent-light: #D96B43;
+  --color-muted-light: #E6E1D8;
+  --color-card-light: #FFFFFF;
+  --color-border-light: #EBE7DF;
+
+  --color-bg-dark: #323437;
+  --color-text-dark: #D1D2D3;
+  --color-accent-dark: #E48460;
+  --color-muted-dark: #3F4245;
+  --color-card-dark: #2C2E30;
+  --color-border-dark: #3F4245;
+  
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Custom CSS variables linked to the theme values above */
+:root {
+  --bg-app: var(--color-bg-active, var(--color-bg-light));
+  --text-app: var(--color-text-light);
+  --accent-app: var(--color-accent-active, var(--color-accent-light));
+  --card-app: var(--color-card-active, var(--color-card-light));
+  --muted-app: var(--color-muted-light);
+  --border-app: var(--color-border-active, var(--color-border-light));
+  --key-bg: #FFFFFF;
+  --key-border: #EBE7DF;
+  /* Keyboard Finger Colors - Light mode */
+  --finger-pinky: #FADBC8;
+  --finger-ring: #F4EAE0;
+  --finger-middle: #E6ECE0;
+  --finger-index: #E0EBF7;
+  --finger-thumb: #FAF9F5;
+  --finger-utility: #F0EDE6;
+}
+
+:root.dark {
+  --bg-app: var(--color-bg-active, var(--color-bg-dark));
+  --text-app: var(--color-text-dark);
+  --accent-app: var(--color-accent-active, var(--color-accent-dark));
+  --card-app: var(--color-card-active, var(--color-card-dark));
+  --muted-app: var(--color-muted-dark);
+  --border-app: var(--color-border-active, var(--color-border-dark));
+  --key-bg: #2C2E30;
+  --key-border: #3F4245;
+  /* Keyboard Finger Colors - Dark mode */
+  --finger-pinky: #483025;
+  --finger-ring: #3D352F;
+  --finger-middle: #2B352A;
+  --finger-index: #28303B;
+  --finger-thumb: #252422;
+  --finger-utility: #1E1D1B;
+}
+
+/* Color Accent Overrides & Overall Theme Tinting */
+.accent-terracotta {
+  --color-accent-active: #D96B43;
+  --color-bg-active: #FAF9F6;
+  --color-card-active: #FFFFFF;
+  --color-border-active: #EBE7DF;
+}
+.dark .accent-terracotta, .accent-terracotta.dark {
+  --color-accent-active: #E48460;
+  --color-bg-active: #323437;
+  --color-card-active: #2C2E30;
+  --color-border-active: #3F4245;
+}
+
+.accent-forest {
+  --color-accent-active: #4F795B;
+  --color-bg-active: #F4F6F4;
+  --color-card-active: #FFFFFF;
+  --color-border-active: #E2E6E2;
+}
+.dark .accent-forest, .accent-forest.dark {
+  --color-accent-active: #639A72;
+  --color-bg-active: #2D322E;
+  --color-card-active: #252A26;
+  --color-border-active: #3A413C;
+}
+
+.accent-oasis {
+  --color-accent-active: #3C7A89;
+  --color-bg-active: #F2F6F7;
+  --color-card-active: #FFFFFF;
+  --color-border-active: #E0E6E8;
+}
+.dark .accent-oasis, .accent-oasis.dark {
+  --color-accent-active: #4C99AA;
+  --color-bg-active: #2D3234;
+  --color-card-active: #25292A;
+  --color-border-active: #3A4042;
+}
+
+.accent-sand {
+  --color-accent-active: #C49F5D;
+  --color-bg-active: #F8F6F2;
+  --color-card-active: #FFFFFF;
+  --color-border-active: #E6E2DA;
+}
+.dark .accent-sand, .accent-sand.dark {
+  --color-accent-active: #D4B06E;
+  --color-bg-active: #34322F;
+  --color-card-active: #2B2926;
+  --color-border-active: #42403A;
+}
+
+/* Base HTML App Font Size Overrides (rem scale base) */
+html.size-app-small {
+  font-size: 14px !important;
+}
+html.size-app-medium {
+  font-size: 16px !important;
+}
+html.size-app-large {
+  font-size: 18px !important;
+}
+
+/* Base HTML App Font Family Overrides */
+html.font-app-sans {
+  font-family: var(--font-sans) !important;
+}
+html.font-app-serif {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+}
+html.font-app-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-app);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease-out, color 0.2s ease-out;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Custom transitions and scrollbar layout */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-app);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-app);
+}
+
+/* Non-flashing solid terracotta cursor blink animation */
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.custom-caret {
+  width: 2px;
+  background-color: var(--accent-app);
+  animation: caretBlink 1s infinite;
+}
+
+/* Focus and inputs styling */
+input, textarea, select {
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent-app) !important;
+  box-shadow: 0 0 0 2px rgba(217, 107, 67, 0.15);
+}
