@@ -1,5 +1,5 @@
 {
-  "name": "typeflow",
+  "name": "itype",
   "version": "1.0.0",
   "description": "Custom Typing Tutor Desktop App",
   "main": "main/main.js",
@@ -35,8 +35,8 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.typeflow.app",
-    "productName": "TypeFlow",
+    "appId": "com.itype.app",
+    "productName": "Itype",
     "directories": {
       "output": "dist-electron"
     },
