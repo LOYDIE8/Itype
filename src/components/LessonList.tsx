@@ -212,7 +212,7 @@ export default function LessonList({ sessions, onSelectStep, onStartPlacementTes
             <h2 className="text-base font-semibold tracking-wide">Not sure of your typing level?</h2>
           </div>
           <p className="text-xs opacity-75 leading-relaxed">
-            Take a 60-second placement test to estimate your typing speed and let TypeFlow recommend your starting lesson level.
+            Take a 60-second placement test to estimate your typing speed and let Itype recommend your starting lesson level.
           </p>
         </div>
         <button
