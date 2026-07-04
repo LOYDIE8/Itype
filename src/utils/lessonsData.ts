@@ -171,14 +171,22 @@ export const lessonsData: LessonChapter[] = [
       },
       {
         id: "4-2",
-        title: "Capitalized Word Practice",
+        title: "Proper Nouns & Capitalized Words",
         type: "words",
         keys: ["shift", "capitals"],
         description: "Practice typing proper nouns and capitalized words. Coordinate Shift keys smoothly.",
-        text: "London Paris Tokyo Berlin Rome Washington Beijing Delhi Cairo Sydney Moscow NewYork Tokyo Paris London"
+        text: "London Paris Tokyo Berlin Rome Washington Beijing Delhi Cairo Sydney Moscow New York Tokyo Paris"
       },
       {
         id: "4-3",
+        title: "Common Contractions",
+        type: "combinations",
+        keys: ["'", "shift"],
+        description: "Practice typing common English contractions using the apostrophe key.",
+        text: "don't it's they're I've can't wouldn't shouldn't let's you're we're didn't isn't don't it's they're"
+      },
+      {
+        id: "4-4",
         title: "Natural Sentence Drills",
         type: "sentences",
         keys: ["shift", "capitals", "punctuation"],
@@ -186,12 +194,153 @@ export const lessonsData: LessonChapter[] = [
         text: "The quick brown fox jumps over the lazy dog. Hard work pays off in the end. Success is sweet. Practice makes perfect!"
       },
       {
-        id: "4-4",
-        title: "Chapter 4 Final Paragraph Test",
+        id: "4-5",
+        title: "Chapter 4 Final Test",
         type: "paragraph_test",
         keys: ["shift", "capitals", "punctuation"],
-        description: "Final assessment paragraph for Chapter 4. Achieve 25 WPM and 92% accuracy to complete the course.",
-        text: "We traveled from London to Paris and then to Tokyo. Along the way, we saw the quick brown fox jump. It was an amazing experience that we will never forget. Touch typing is now your second nature."
+        description: "Final assessment paragraph for Chapter 4. Achieve 25 WPM and 92% accuracy to unlock Chapter 5.",
+        text: "We traveled from London to Paris and then to Tokyo. Along the way, we saw the quick brown fox jump. Don't worry if it takes time; you're doing great. Touch typing will soon become second nature."
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: "Chapter 5: The Number Row Keys",
+    description: "Master the top number row: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0.",
+    steps: [
+      {
+        id: "5-1",
+        title: "Left Hand Numbers",
+        type: "keys",
+        keys: ["1", "2", "3", "4", "5"],
+        description: "Reach left pinky to 1, ring to 2, middle to 3, index to 4 and 5. Return to home row anchors after reaching.",
+        text: "11 22 33 44 55 12 34 51 52 43 21 123 451 254 312 5543 2115 4321 15 24 35 42"
+      },
+      {
+        id: "5-2",
+        title: "Right Hand Numbers",
+        type: "keys",
+        keys: ["6", "7", "8", "9", "0"],
+        description: "Reach right index to 6 and 7, middle to 8, ring to 9, pinky to 0. Always hover your wrists.",
+        text: "66 77 88 99 00 67 89 06 78 90 678 906 789 087 67890 9876 0987 8760 60 79 80 96"
+      },
+      {
+        id: "5-3",
+        title: "Alphanumeric Word Chains",
+        type: "words",
+        keys: ["numbers", "words"],
+        description: "Practice combining letters and numbers to type standard text data sequences.",
+        text: "1984 book 2026 year 365 days 24 hours 60 minutes 7 days 10 items 100 percent 50 states 12 months"
+      },
+      {
+        id: "5-4",
+        title: "Numerical Data Sequences",
+        type: "sentences",
+        keys: ["numbers", "punctuation"],
+        description: "Practice typing decimals, phone numbers, and sequences. Keep keypresses light.",
+        text: "The ratio is 3.14159. Area code is 90210. Phone number is 800-555-0100. Call 911 in an emergency. The room number is 101."
+      },
+      {
+        id: "5-5",
+        title: "Number Row Final Test",
+        type: "paragraph_test",
+        keys: ["numbers", "prose"],
+        description: "Final assessment paragraph for Chapter 5. Achieve 20 WPM and 90% accuracy to unlock Chapter 6.",
+        text: "In 1995, the internet opened to commercial traffic. There are 24 hours in a day, 60 minutes in an hour, and 365 days in a year. The code was 90210, and the support number was 800-555-0100."
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "Chapter 6: Special Symbols & Code Syntax",
+    description: "Master programming code characters: brackets, parentheses, semicolons, and operators.",
+    steps: [
+      {
+        id: "6-1",
+        title: "Semicolons & Parentheses",
+        type: "keys",
+        keys: [";", "(", ")", "=", "+"],
+        description: "Reach right pinky for semicolon, hold shift for parentheses. Coordinate indices for operators.",
+        text: "(); (); x = 5; y = 10; x + y = 15; (a + b); (x * y); console.log(); func(); main();"
+      },
+      {
+        id: "6-2",
+        title: "Brackets & Braces",
+        type: "keys",
+        keys: ["[", "]", "{", "}"],
+        description: "Reach right pinky to bracket keys, opposite pinky shift for curly braces. Essential for code blocks.",
+        text: "[] {} [] {} arr = [1, 2, 3]; obj = { id: 1 }; const user = { name: 'Alice' }; block = {};"
+      },
+      {
+        id: "6-3",
+        title: "Logical Operators & Quotes",
+        type: "words",
+        keys: ["&", "|", "!", "\"", "'", "<", ">"],
+        description: "Practice typing boolean logic syntax and standard text strings.",
+        text: "&& || != 'hello' \"world\" x < y a > b (x && y) || !z <= >= tag = '<div />'"
+      },
+      {
+        id: "6-4",
+        title: "Mixed Coding Snippets",
+        type: "sentences",
+        keys: ["code", "symbols"],
+        description: "Practice typing complete lines of computer code syntax with high precision.",
+        text: "const add = (a, b) => { return a + b; }; if (x === y) { console.log('match'); } let data = [10, 20];"
+      },
+      {
+        id: "6-5",
+        title: "Chapter 6 Final Test",
+        type: "paragraph_test",
+        keys: ["code", "symbols"],
+        description: "Final assessment paragraph for Chapter 6. Achieve 18 WPM and 90% accuracy to unlock Chapter 7.",
+        text: "const user = { name: 'Alice', id: 101 }; if (user.id >= 100 && user.name === 'Alice') { console.log('Access Granted!'); } else { return null; }"
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: "Chapter 7: Advanced Speed & Rhythm",
+    description: "Graduate with advanced drills designed to optimize word chains and speed endurance.",
+    steps: [
+      {
+        id: "7-1",
+        title: "Long Word Precision",
+        type: "words",
+        keys: ["advanced", "prose"],
+        description: "Practice typing multi-syllable vocabulary smoothly without hesitations.",
+        text: "understanding configuration relationship visualization administration characteristics responsibility standardisation"
+      },
+      {
+        id: "7-2",
+        title: "Double Letter Coordination",
+        type: "words",
+        keys: ["double-letters"],
+        description: "Practice words with double characters. Keep key releases prompt to prevent key slips.",
+        text: "bookkeeper balloon feel look deep speed glass across support command call immediate successful tool staff follow sleep green"
+      },
+      {
+        id: "7-3",
+        title: "High-Frequency Chains",
+        type: "sentences",
+        keys: ["connectors"],
+        description: "Build speeds on the most common connectors. Let the words flow as single gestures.",
+        text: "the of to and a in that is it he was for on are as with his they i at be this have from or one had by word"
+      },
+      {
+        id: "7-4",
+        title: "Steady Beat Prose",
+        type: "sentences",
+        keys: ["rhythm"],
+        description: "Type continuous paragraphs with a steady beat. Do not burst type; target smooth keystrokes.",
+        text: "Rhythm is the key to high-speed touch typing. Maintain a steady beat as you press each key, avoiding sudden bursts of speed. A calm mind and relaxed hands yield the best results."
+      },
+      {
+        id: "7-5",
+        title: "Ultimate Course Graduation Test",
+        type: "paragraph_test",
+        keys: ["graduation"],
+        description: "Course graduation test. Achieve 30 WPM and 92% accuracy to complete the Itype Academy!",
+        text: "Congratulations on reaching the final lesson of Itype! You have successfully mastered the home row, top row, bottom row, numbers, shift keys, and coding symbols. Maintain a steady, relaxed rhythm, keep practicing daily, and let muscle memory guide your fingers. You are now a certified touch typist!"
       }
     ]
   }
