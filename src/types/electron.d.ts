@@ -4,6 +4,7 @@ export interface ProfileSettings {
   sound: boolean;
   strictMode: boolean;
   fontSize: 'small' | 'medium' | 'large';
+  showKeyboard?: boolean;
   keyboardSize?: 'standard' | 'compact';
   keyboardColorCoded?: boolean;
   containerHeight?: 'compact' | 'standard' | 'large';
@@ -11,7 +12,11 @@ export interface ProfileSettings {
   appFontSize?: 'small' | 'medium' | 'large';
   appFontType?: 'sans' | 'serif' | 'mono';
   soundVolume?: number;
-  soundProfile?: 'clicky' | 'soft' | 'vintage';
+  soundProfile?: 'clicky' | 'soft' | 'vintage' | 'aggressive';
+  errorSound?: boolean;
+  timerSound?: boolean;
+  completionSound?: boolean;
+  darkShade?: 'pitch' | 'obsidian' | 'charcoal' | 'slate' | 'dusk';
 }
 
 export interface Profile {

@@ -339,7 +339,7 @@ export const lessonsData: LessonChapter[] = [
         title: "Ultimate Course Graduation Test",
         type: "paragraph_test",
         keys: ["graduation"],
-        description: "Course graduation test. Achieve 30 WPM and 92% accuracy to complete the Itype Academy!",
+        description: "Course graduation test. Achieve 30 WPM and 92% accuracy to complete the Itype Lessons!",
         text: "Congratulations on reaching the final lesson of Itype! You have successfully mastered the home row, top row, bottom row, numbers, shift keys, and coding symbols. Maintain a steady, relaxed rhythm, keep practicing daily, and let muscle memory guide your fingers. You are now a certified touch typist!"
       }
     ]

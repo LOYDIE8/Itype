@@ -9,12 +9,22 @@ let dbPath = null;
  * Initializes the SQLite database file and tables.
  */
 async function initDatabase(appUserDataPath) {
-  dbPath = path.join(appUserDataPath, 'typeflow.db');
+  dbPath = path.join(appUserDataPath, 'itype.db');
+  const legacyDbPath = path.join(appUserDataPath, 'typeflow.db');
   
   // Ensure application user data directory exists
   const dir = path.dirname(dbPath);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
+  }
+
+  // Migrate legacy database if it exists and new dbPath does not exist
+  if (!fs.existsSync(dbPath) && fs.existsSync(legacyDbPath)) {
+    try {
+      fs.copyFileSync(legacyDbPath, dbPath);
+    } catch (e) {
+      console.warn("Legacy database migration copy failed:", e);
+    }
   }
 
   // Load sql.js WebAssembly engine

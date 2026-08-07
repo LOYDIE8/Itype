@@ -158,21 +158,21 @@ export default function TutorialGuide() {
   const current = slides[currentSlide];
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 animate-fade-in text-[#2E2C29] dark:text-[#ECE8E1]">
-      <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl shadow-sm p-8 flex flex-col justify-between min-h-[460px]">
+    <div className="max-w-2xl mx-auto py-6 px-4 animate-fade-in text-[#09090B] dark:text-[#FAFAFA] font-mono">
+      <div className="border border-[#E5E5E5] dark:border-[#27272A] p-8 flex flex-col justify-between min-h-[460px] bg-transparent">
         
         {/* Slide header */}
         <div className="space-y-4">
-          <div className="flex items-center gap-4 border-b border-[#E6E1D8] dark:border-[#2F2D2A] pb-4">
-            <div className="p-3 bg-[#FAF7F2] dark:bg-[#181715] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl shrink-0">
+          <div className="flex items-center gap-4 border-b border-[#E5E5E5] dark:border-[#27272A] pb-4">
+            <div className="p-2.5 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent shrink-0">
               {current.icon}
             </div>
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--accent-app)] dark:text-[var(--accent-app)]">
-                Guide {currentSlide + 1} of {slides.length}
+              <span className="text-[9px] font-bold uppercase tracking-widest opacity-60">
+                [ MANUAL // STEP 0{currentSlide + 1}_OF_0{slides.length} ]
               </span>
-              <h2 className="text-xl font-medium tracking-wide mt-0.5">{current.title}</h2>
-              <p className="text-xs opacity-50 mt-0.5">{current.subtitle}</p>
+              <h2 className="text-sm font-bold uppercase tracking-wider mt-0.5">{current.title}</h2>
+              <p className="text-xs opacity-50 mt-0.5 font-mono">{current.subtitle}</p>
             </div>
           </div>
 
@@ -184,40 +184,40 @@ export default function TutorialGuide() {
 
         {/* Playground Practice Drill (if configured) */}
         {current.playgroundText && (
-          <div className="border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-5 mt-4 space-y-3">
+          <div className="border-t border-[#E5E5E5] dark:border-[#27272A] pt-5 mt-4 space-y-3 font-mono">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider opacity-65 flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5 text-[var(--accent-app)]" />
-                Interactive Finger Placement Drill
+              <span className="text-[9px] font-bold uppercase tracking-widest opacity-60 flex items-center gap-1.5">
+                <Flame className="w-3.5 h-3.5" />
+                [ FINGER_PLACEMENT_TEST_DRILL ]
               </span>
               {drillSuccess && (
-                <span className="text-xs text-emerald-500 font-semibold flex items-center gap-1">
+                <span className="text-xs text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-1">
                   <CheckCircle className="w-3.5 h-3.5" />
-                  Correct Placement!
+                  ✓ CORRECT
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-3 bg-[#FAF7F2] dark:bg-[#181715] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-3.5">
+            <div className="flex items-center gap-3 border border-[#E5E5E5] dark:border-[#27272A] p-3.5 bg-transparent">
               <div className="w-1/2">
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-45">Target Keys:</span>
-                <p className="font-mono text-base font-semibold tracking-widest mt-1 text-[var(--accent-app)] dark:text-[var(--accent-app)]">
+                <span className="text-[9px] uppercase font-bold tracking-widest opacity-50 block">TARGET_KEYS:</span>
+                <p className="font-mono text-sm font-bold tracking-widest mt-1">
                   {current.playgroundText}
                 </p>
               </div>
               <div className="w-1/2 relative">
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-45">Type Here:</span>
+                <span className="text-[9px] uppercase font-bold tracking-widest opacity-50 block">TYPE_STREAM:</span>
                 <input
                   type="text"
                   placeholder="Practice keys..."
                   value={drillInput}
                   onChange={handleDrillInput}
                   maxLength={current.playgroundText.length}
-                  className={`w-full p-2.5 mt-1 rounded-lg border font-mono text-sm tracking-widest bg-[#FFFDFB] dark:bg-[#201E1C] transition-all ${
+                  className={`w-full p-2 mt-1 border font-mono text-sm tracking-widest bg-transparent transition-all ${
                     drillSuccess 
-                      ? 'border-emerald-500 bg-emerald-500/5' 
+                      ? 'border-emerald-500 text-emerald-500 bg-emerald-500/10' 
                       : drillInput.length > 0 && !current.playgroundText.startsWith(drillInput)
-                      ? 'border-red-500 bg-red-500/5'
-                      : 'border-[#E6E1D8] dark:border-[#2F2D2A]'
+                      ? 'border-red-500 text-red-500 bg-red-500/10'
+                      : 'border-[#E5E5E5] dark:border-[#27272A]'
                   }`}
                 />
               </div>
@@ -226,23 +226,23 @@ export default function TutorialGuide() {
         )}
 
         {/* Navigation buttons */}
-        <div className="flex items-center justify-between border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-6 mt-6">
+        <div className="flex items-center justify-between border-t border-[#E5E5E5] dark:border-[#27272A] pt-6 mt-6 font-mono">
           <button
             onClick={handlePrev}
             disabled={currentSlide === 0}
-            className="flex items-center gap-1.5 px-4.5 py-2.5 rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] text-xs font-semibold hover:bg-[#FAF7F2] dark:hover:bg-[#181715] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-4 py-2 border border-[#E5E5E5] dark:border-[#27272A] text-xs font-bold uppercase tracking-widest hover:bg-[#09090B] hover:text-[#FFFFFF] dark:hover:bg-[#FAFAFA] dark:hover:text-[#09090B] transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Previous
+            PREVIOUS
           </button>
 
           {/* Dots tracker */}
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {slides.map((_, idx) => (
               <span
                 key={idx}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  idx === currentSlide ? 'bg-[var(--accent-app)] dark:bg-[var(--accent-app)] scale-125' : 'bg-[#E6E1D8] dark:bg-[#2F2D2A] opacity-40'
+                className={`w-2 h-2 transition-all ${
+                  idx === currentSlide ? 'bg-[#09090B] dark:bg-[#FAFAFA]' : 'border border-[#E5E5E5] dark:border-[#27272A] opacity-40'
                 }`}
               />
             ))}
@@ -251,9 +251,9 @@ export default function TutorialGuide() {
           <button
             onClick={handleNext}
             disabled={currentSlide === slides.length - 1}
-            className="flex items-center gap-1.5 px-4.5 py-2.5 rounded-lg bg-[var(--accent-app)] dark:bg-[var(--accent-app)] text-white font-semibold text-xs hover:bg-[var(--accent-app)]/90 transition-all cursor-pointer shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-4 py-2 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            Next
+            NEXT
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

@@ -22,7 +22,7 @@ export function useSynthAudio() {
   const playClick = useCallback((
     enabled: boolean,
     volume: number = 0.5,
-    profile: 'clicky' | 'soft' | 'vintage' = 'clicky'
+    profile: 'clicky' | 'soft' | 'vintage' | 'aggressive' = 'clicky'
   ) => {
     if (!enabled) return;
     try {
@@ -32,7 +32,33 @@ export function useSynthAudio() {
 
       const now = ctx.currentTime;
 
-      if (profile === 'clicky') {
+      if (profile === 'aggressive') {
+        // Aggressive heavy mechanical switch snap (Punchy clack + sub thud)
+        const oscSnap = ctx.createOscillator();
+        const gainSnap = ctx.createGain();
+        oscSnap.type = 'sawtooth';
+        oscSnap.frequency.setValueAtTime(2400, now);
+        oscSnap.frequency.exponentialRampToValueAtTime(700, now + 0.012);
+        gainSnap.gain.setValueAtTime(0.12 * volume, now);
+        gainSnap.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
+        oscSnap.connect(gainSnap);
+        gainSnap.connect(ctx.destination);
+        oscSnap.start(now);
+        oscSnap.stop(now + 0.012);
+
+        // Low heavy aluminum plate thud
+        const oscThud = ctx.createOscillator();
+        const gainThud = ctx.createGain();
+        oscThud.type = 'square';
+        oscThud.frequency.setValueAtTime(320, now + 0.002);
+        oscThud.frequency.exponentialRampToValueAtTime(50, now + 0.025);
+        gainThud.gain.setValueAtTime(0.14 * volume, now + 0.002);
+        gainThud.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+        oscThud.connect(gainThud);
+        gainThud.connect(ctx.destination);
+        oscThud.start(now + 0.002);
+        oscThud.stop(now + 0.025);
+      } else if (profile === 'clicky') {
         // High switch leaf tick contact
         const osc1 = ctx.createOscillator();
         const gain1 = ctx.createGain();
@@ -133,5 +159,74 @@ export function useSynthAudio() {
     }
   }, []);
 
-  return { playClick, playError };
+  /**
+   * Play a soft warning tick for final 10 seconds of a time trial
+   */
+  const playTimerTick = useCallback((enabled: boolean, volume: number = 0.5, isFinalThree: boolean = false) => {
+    if (!enabled) return;
+    try {
+      initCtx();
+      const ctx = audioCtxRef.current;
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      // Pitch goes higher for last 3 seconds
+      const freq = isFinalThree ? 880 : 587.33; // A5 vs D5
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime((isFinalThree ? 0.15 : 0.08) * volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.08);
+    } catch (e) {
+      console.warn("Timer tick audio failed:", e);
+    }
+  }, []);
+
+  /**
+   * Play a grand celebratory "big ting!" chime on session completion
+   */
+  const playSessionComplete = useCallback((enabled: boolean, volume: number = 0.5) => {
+    if (!enabled) return;
+    try {
+      initCtx();
+      const ctx = audioCtxRef.current;
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      // Bright major triad chime: C5 (523Hz), E5 (659Hz), G5 (784Hz), C6 (1046Hz)
+      const freqs = [523.25, 659.25, 783.99, 1046.50];
+
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+
+        const noteGain = 0.12 * volume;
+        gain.gain.setValueAtTime(0.0001, now + idx * 0.04);
+        gain.gain.linearRampToValueAtTime(noteGain, now + idx * 0.04 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 0.6);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + idx * 0.04);
+        osc.stop(now + idx * 0.04 + 0.6);
+      });
+    } catch (e) {
+      console.warn("Session completion audio failed:", e);
+    }
+  }, []);
+
+  return { playClick, playError, playTimerTick, playSessionComplete };
 }

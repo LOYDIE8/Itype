@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
-import { Award, Zap, Flame, Clock, BarChart4, Filter, Info, ShieldCheck, Loader2 } from 'lucide-react';
+import { Award, Zap, Flame, Clock, BarChart4, Filter, ShieldCheck, Loader2 } from 'lucide-react';
 import { Session, Badge } from '../types/electron';
 import VisualKeyboard from './VisualKeyboard';
 
@@ -11,10 +11,19 @@ const BADGES_LIST = [
   { id: 'speed_demon_2', name: 'Speed Demon II', desc: 'Type 60+ WPM in any session.', icon: '🚀' },
   { id: 'speed_demon_3', name: 'Speed Demon III', desc: 'Type 80+ WPM in any session.', icon: '🔥' },
   { id: 'speed_demon_4', name: 'Speed Demon IV', desc: 'Type 100+ WPM in any session!', icon: '👑' },
+  { id: 'speed_demon_5', name: 'Godspeed', desc: 'Type 120+ WPM in any session!', icon: '⚡' },
   { id: 'sniper', name: 'Sniper', desc: 'Finished a lesson with 100% accuracy (min 80 chars).', icon: '🎯' },
+  { id: 'flawless_99', name: 'Sharpshooter', desc: 'Finished a session with 99%+ accuracy (min 150 chars).', icon: '🏹' },
   { id: 'marathoner', name: 'Marathoner', desc: 'Completed a session longer than 5 minutes.', icon: '🏃' },
   { id: 'consistency_3', name: '3-Day Streak', desc: 'Practiced typing 3 days in a row.', icon: '🌱' },
-  { id: 'consistency_7', name: '7-Day Streak', desc: 'Practiced typing 7 days in a row.', icon: '🌳' }
+  { id: 'consistency_7', name: '7-Day Streak', desc: 'Practiced typing 7 days in a row.', icon: '🌳' },
+  { id: 'consistency_14', name: 'Fortnight Legend', desc: 'Practiced typing 14 days in a row.', icon: '🔥' },
+  { id: 'sessions_10', name: 'Warm Up', desc: 'Completed 10 typing sessions.', icon: '🥊' },
+  { id: 'sessions_50', name: 'Dedicated Typist', desc: 'Completed 50 typing sessions.', icon: '🏆' },
+  { id: 'sessions_100', name: 'Centurion', desc: 'Completed 100 typing sessions!', icon: '🎖️' },
+  { id: 'custom_creator', name: 'Word Architect', desc: 'Completed a custom text or random word drill.', icon: '✍️' },
+  { id: 'essay_scholar', name: 'Literary Scholar', desc: 'Completed a practice session on a predefined essay.', icon: '📜' },
+  { id: 'night_owl', name: 'Night Owl', desc: 'Completed a practice session between 10 PM and 5 AM.', icon: '🦉' }
 ];
 
 // Vocabulary dictionary mapped to individual letters for AI review generation
@@ -37,7 +46,7 @@ const COMMON_WORDS_BY_LETTER: Record<string, string[]> = {
   p: ['page', 'paper', 'part', 'party', 'pass', 'past', 'pay', 'people', 'perform', 'period', 'person', 'picture', 'place', 'plan', 'play', 'please', 'point', 'port', 'position', 'possible', 'power', 'practice', 'prepare', 'present', 'press', 'pretty', 'problem', 'process', 'produce', 'product', 'program', 'provide', 'public', 'pull', 'push', 'put'],
   q: ['quart', 'quick', 'quickly', 'quiet', 'quite', 'question', 'queen', 'quote'],
   r: ['rain', 'raise', 'ran', 'rate', 'rather', 'reach', 'read', 'ready', 'real', 'reason', 'receive', 'record', 'red', 'relationship', 'remain', 'remember', 'remove', 'report', 'represent', 'require', 'research', 'result', 'return', 'rhythm', 'rich', 'ride', 'right', 'ring', 'rise', 'road', 'rock', 'roll', 'room', 'root', 'round', 'row', 'rule', 'run'],
-  s: ['sad', 'safe', 'said', 'sail', 'same', 'sand', 'sat', 'save', 'saw', 'say', 'scene', 'school', 'science', 'score', 'sea', 'search', 'season', 'second', 'secret', 'section', 'see', 'seed', 'seek', 'seem', 'seen', 'self', 'sell', 'send', 'sense', 'sent', 'sentence', 'separate', 'serve', 'service', 'set', 'seven', 'several', 'shall', 'shape', 'share', 'sharp', 'she', 'sheet', 'shelf', 'shell', 'shine', 'ship', 'shirt', 'shoe', 'shoot', 'shop', 'shore', 'short', 'shot', 'should', 'shoulder', 'shout', 'show', 'shrink', 'shut', 'side', 'sight', 'sign', 'signal', 'silent', 'silly', 'silver', 'similar', 'simple', 'since', 'sing', 'single', 'sink', 'sister', 'sit', 'site', 'six', 'size', 'skill', 'skin', 'skirt', 'sky', 'sleep', 'slip', 'slow', 'slowly', 'small', 'smart', 'smell', 'smile', 'smoke', 'smooth', 'snow', 'so', 'soap', 'social', 'soft', 'softly', 'soil', 'sold', 'soldier', 'sole', 'solid', 'solve', 'some', 'someone', 'something', 'sometime', 'son', 'song', 'soon', 'sore', 'sorrow', 'sort', 'sound', 'source', 'south', 'space', 'speak', 'special', 'speed', 'spell', 'spend', 'spent', 'spin', 'spirit', 'spite', 'split', 'spoken', 'sport', 'spot', 'spread', 'spring', 'square', 'stable', 'staff', 'stage', 'stair', 'stamp', 'stand', 'standard', 'star', 'stare', 'start', 'state', 'station', 'stay', 'steady', 'steam', 'steel', 'steep', 'steer', 'step', 'stick', 'stiff', 'still', 'sting', 'stir', 'stock', 'stone', 'stood', 'stop', 'store', 'storm', 'story', 'stove', 'straight', 'strain', 'strange', 'strap', 'stream', 'street', 'strength', 'stretch', 'strict', 'strike', 'string', 'strip', 'stroke', 'strong', 'strongly', 'struck', 'structure', 'struggle', 'student', 'studio', 'study', 'stuff', 'stumble', 'style', 'subject', 'substance', 'succeed', 'success', 'such', 'sudden', 'suddenly', 'suffer', 'sugar', 'suggest', 'suit', 'summer', 'sun', 'sunday', 'super', 'supper', 'supply', 'support', 'suppose', 'sure', 'surely', 'surface', 'surprise', 'surround', 'survey', 'suspect', 'sweep', 'sweet', 'swell', 'swept', 'swift', 'swim', 'swing', 'switch', 'sword', 'swore', 'sworn', 'symbol', 'system'],
+  s: ['sad', 'safe', 'said', 'sail', 'same', 'sand', 'sat', 'save', 'saw', 'say', 'scene', 'school', 'science', 'score', 'sea', 'search', 'season', 'second', 'secret', 'section', 'see', 'seed', 'seek', 'seem', 'seen', 'self', 'sell', 'send', 'sense', 'sent', 'sentence', 'separate', 'serve', 'service', 'set', 'seven', 'several', 'shall', 'shape', 'share', 'sharp', 'she', 'sheet', 'shelf', 'shell', 'shine', 'ship', 'shirt', 'shoe', 'shoot', 'shop', 'shore', 'short', 'shot', 'should', 'shoulder', 'shout', 'show', 'shrink', 'shut', 'side', 'sight', 'sign', 'signal', 'silent', 'silly', 'silver', 'similar', 'simple', 'since', 'sing', 'single', 'sink', 'sister', 'sit', 'site', 'six', 'size', 'skill', 'skin', 'skirt', 'sky', 'sleep', 'slip', 'slow', 'slowly', 'small', 'smart', 'smell', 'smoke', 'smooth', 'snow', 'so', 'soap', 'social', 'soft', 'softly', 'soil', 'sold', 'soldier', 'sole', 'solid', 'solve', 'some', 'someone', 'something', 'sometime', 'son', 'song', 'soon', 'sore', 'sorrow', 'sort', 'sound', 'source', 'south', 'space', 'speak', 'special', 'speed', 'spell', 'spend', 'spent', 'spin', 'spirit', 'spite', 'split', 'spoken', 'sport', 'spot', 'spread', 'spring', 'square', 'stable', 'staff', 'stage', 'stair', 'stamp', 'stand', 'standard', 'star', 'stare', 'start', 'state', 'station', 'stay', 'steady', 'steam', 'steel', 'steep', 'steer', 'step', 'stick', 'stiff', 'still', 'sting', 'stir', 'stock', 'stone', 'stood', 'stop', 'store', 'storm', 'story', 'stove', 'straight', 'strain', 'strange', 'strap', 'stream', 'street', 'strength', 'stretch', 'strict', 'strike', 'string', 'strip', 'stroke', 'strong', 'strongly', 'struck', 'structure', 'struggle', 'student', 'studio', 'study', 'stuff', 'stumble', 'style', 'subject', 'substance', 'succeed', 'success', 'such', 'sudden', 'suddenly', 'suffer', 'sugar', 'suggest', 'suit', 'summer', 'sun', 'sunday', 'super', 'supper', 'supply', 'support', 'suppose', 'sure', 'surely', 'surface', 'surprise', 'surround', 'survey', 'suspect', 'sweep', 'sweet', 'swell', 'swept', 'swift', 'swim', 'swing', 'switch', 'sword', 'swore', 'sworn', 'symbol', 'system'],
   t: ['table', 'tail', 'take', 'talk', 'tall', 'tap', 'target', 'task', 'taste', 'taught', 'tax', 'tea', 'teach', 'team', 'tear', 'teeth', 'tell', 'temper', 'ten', 'tend', 'tent', 'term', 'test', 'than', 'thank', 'that', 'the', 'their', 'them', 'themselves', 'then', 'there', 'therefore', 'these', 'they', 'thick', 'thin', 'thing', 'think', 'third', 'this', 'those', 'though', 'thought', 'thousand', 'thread', 'threat', 'three', 'threw', 'throat', 'throne', 'through', 'throw', 'thrown', 'thrust', 'thumb', 'thunder', 'thursday', 'thus', 'ticket', 'tide', 'tie', 'tight', 'tile', 'till', 'timber', 'time', 'tin', 'tiny', 'tip', 'tire', 'tired', 'title', 'to', 'tobacco', 'today', 'toe', 'together', 'told', 'tomorrow', 'ton', 'tone', 'tongue', 'tonight', 'too', 'took', 'tool', 'tooth', 'top', 'topic', 'tore', 'torn', 'toss', 'total', 'touch', 'toward', 'tower', 'town', 'toy', 'trace', 'track', 'trade', 'traffic', 'trail', 'train', 'transfer', 'translate', 'trap', 'travel', 'treasure', 'treat', 'treatment', 'tree', 'tremble', 'trend', 'trial', 'triangle', 'tribe', 'trick', 'tried', 'trigger', 'trim', 'trip', 'triumph', 'troop', 'trouble', 'trowel', 'truck', 'true', 'truly', 'turned', 'turtle', 'twelve', 'twenty', 'twice', 'twin', 'twist', 'two', 'type', 'typical'],
   u: ['under', 'understand', 'unit', 'until', 'up', 'upon', 'us', 'use', 'usual'],
   v: ['value', 'various', 'very', 'voice', 'visit', 'valley', 'village', 'volume', 'view'],
@@ -66,31 +75,30 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
     try {
       setIsLoading(true);
       const sessionList = await window.api.getSessions(profileId);
-      const badgeList = await window.api.getBadges(profileId);
+      let badgeList = await window.api.getBadges(profileId);
       
       setSessions(sessionList);
-      setBadges(badgeList);
 
-      // Check if current streak qualifies for streak badges, and auto-unlock them
+      // Auto unlock streak & session count badges
       const streak = calculateStreak(sessionList);
-      if (streak >= 3) {
-        const hasBadge = badgeList.some(b => b.badge_id === 'consistency_3');
-        if (!hasBadge) {
-          await window.api.unlockBadge(profileId, 'consistency_3');
-          // Reload badges
-          const updatedBadges = await window.api.getBadges(profileId);
-          setBadges(updatedBadges);
+      const sessionCount = sessionList.length;
+      const badgesToUnlock: string[] = [];
+
+      if (streak >= 3) badgesToUnlock.push('consistency_3');
+      if (streak >= 7) badgesToUnlock.push('consistency_7');
+      if (streak >= 14) badgesToUnlock.push('consistency_14');
+      if (sessionCount >= 10) badgesToUnlock.push('sessions_10');
+      if (sessionCount >= 50) badgesToUnlock.push('sessions_50');
+      if (sessionCount >= 100) badgesToUnlock.push('sessions_100');
+
+      for (const badgeId of badgesToUnlock) {
+        if (!badgeList.some(b => b.badge_id === badgeId)) {
+          await window.api.unlockBadge(profileId, badgeId);
         }
       }
-      if (streak >= 7) {
-        const hasBadge = badgeList.some(b => b.badge_id === 'consistency_7');
-        if (!hasBadge) {
-          await window.api.unlockBadge(profileId, 'consistency_7');
-          // Reload badges
-          const updatedBadges = await window.api.getBadges(profileId);
-          setBadges(updatedBadges);
-        }
-      }
+
+      badgeList = await window.api.getBadges(profileId);
+      setBadges(badgeList);
     } catch (err) {
       console.error("Failed to load dashboard statistics", err);
     } finally {
@@ -150,6 +158,7 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
       return {
         totalSessions: 0,
         avgWpm: 0,
+        bestWpm: 0,
         avgAccuracy: 0,
         totalDuration: 0,
         streak: calculateStreak(sessions), // Streak is always based on absolute activity
@@ -186,9 +195,12 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
         title: s.source_name
       }));
 
+    const bestWpm = Math.round(Math.max(...filtered.map(s => s.wpm)));
+
     return {
       totalSessions: filtered.length,
       avgWpm: Math.round(totalWpm / filtered.length),
+      bestWpm,
       avgAccuracy: Math.round(totalAccuracy / filtered.length),
       totalDuration,
       streak: calculateStreak(sessions),
@@ -213,131 +225,137 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[400px] text-[#2E2C29] dark:text-[#ECE8E1]">
-        <Loader2 className="w-8 h-8 animate-spin text-[var(--accent-app)] dark:text-[var(--accent-app)] opacity-50" />
+      <div className="flex items-center justify-center h-[400px] text-[#09090B] dark:text-[#FAFAFA] font-mono">
+        <Loader2 className="w-6 h-6 animate-spin opacity-50" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 animate-fade-in text-[#2E2C29] dark:text-[#ECE8E1]">
-      
-      {/* Page header and Filter controller */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div className="max-w-4xl mx-auto py-6 px-4 animate-fade-in text-[#09090B] dark:text-[#FAFAFA] font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-[#E5E5E5] dark:border-[#27272A] pb-4 font-sans">
         <div>
-          <h1 className="text-2xl font-light tracking-wide mb-1">Performance Dashboard</h1>
-          <p className="text-sm opacity-60">Visualize WPM trends and review problem keys heatmap.</p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="status-dot"></span>
+            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Analytics</span>
+          </div>
+          <h1 className="text-2xl font-light tracking-tight font-sans">Performance Telemetry</h1>
+          <p className="text-xs opacity-60 font-sans mt-0.5">Track your typing WPM milestones, accuracy curves, and achievements.</p>
         </div>
 
-        {/* Filters bar */}
-        <div className="flex items-center gap-1.5 p-1 bg-[#FAF7F2] dark:bg-[#1B1A18] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl self-start sm:self-auto shadow-inner">
-          <Filter className="w-3.5 h-3.5 opacity-55 mx-2 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
-          {(['all', 'lesson', 'custom'] as const).map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilterType(type)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
-                filterType === type
-                  ? 'bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] text-[var(--accent-app)] dark:text-[var(--accent-app)] shadow-sm'
-                  : 'border-transparent opacity-60'
-              }`}
-            >
-              {type === 'all' ? 'All Sessions' : type === 'lesson' ? 'Lessons' : 'Custom'}
-            </button>
-          ))}
+        <div className="flex items-center gap-1 border border-[#E5E5E5] dark:border-[#27272A] p-0.5 rounded-md font-sans">
+          <Filter className="w-3.5 h-3.5 opacity-50 ml-2 mr-1" />
+          <button
+            onClick={() => setFilterType('all')}
+            className={`px-3 py-1 text-xs font-medium rounded-sm transition-all cursor-pointer ${
+              filterType === 'all'
+                ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                : 'opacity-60 hover:opacity-100'
+            }`}
+          >
+            All Sessions
+          </button>
+          <button
+            onClick={() => setFilterType('lesson')}
+            className={`px-3 py-1 text-xs font-medium rounded-sm transition-all cursor-pointer ${
+              filterType === 'lesson'
+                ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                : 'opacity-60 hover:opacity-100'
+            }`}
+          >
+            Lessons
+          </button>
+          <button
+            onClick={() => setFilterType('custom')}
+            className={`px-3 py-1 text-xs font-medium rounded-sm transition-all cursor-pointer ${
+              filterType === 'custom'
+                ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                : 'opacity-60 hover:opacity-100'
+            }`}
+          >
+            Custom Drills
+          </button>
         </div>
       </div>
 
-      {sessions.length === 0 ? (
-        <div className="text-center py-16 bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl shadow-sm p-8 max-w-lg mx-auto">
-          <BarChart4 className="w-12 h-12 text-[var(--accent-app)] dark:text-[var(--accent-app)] mx-auto mb-3 opacity-40" />
-          <h3 className="text-base font-semibold tracking-wide mb-1">No Practice History Yet</h3>
-          <p className="text-xs opacity-60 mb-6">Complete your placement test or select a home row lesson to generate typing stats.</p>
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center py-16 opacity-50 font-sans">
+          <Loader2 className="w-6 h-6 animate-spin" />
+          <p className="text-xs mt-2 font-sans text-neutral-500">Loading Telemetry Data...</p>
+        </div>
+      ) : sessions.length === 0 ? (
+        <div className="border border-[#E5E5E5] dark:border-[#27272A] p-12 text-center bg-transparent rounded-xl font-sans">
+          <BarChart4 className="w-8 h-8 opacity-30 mx-auto mb-2" />
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500">No Session History</h3>
+          <p className="text-xs opacity-50 max-w-sm mx-auto mt-1 font-sans leading-relaxed">
+            Complete your first typing lesson or placement assessment to record speed curves and heatmaps.
+          </p>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-6 font-sans">
           
-          {/* Summary counters grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             
-            {/* Speed card */}
-            <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-5 shadow-sm">
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-4 bg-transparent rounded-xl">
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Avg Speed</span>
-                <Zap className="w-4 h-4 text-[var(--accent-app)]" />
+                <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Average Speed</span>
+                <Zap className="w-4 h-4 opacity-50" />
               </div>
-              <p className="text-3xl font-light tracking-wide">{stats.avgWpm} <span className="text-xs opacity-50 font-normal">WPM</span></p>
-              <p className="text-[10px] opacity-45 mt-1 border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-1.5 flex justify-between">
-                <span>Net WPM formula</span>
-                <span className="font-semibold text-[var(--accent-app)]">Best: {Math.round(sessions.length > 0 ? Math.max(...sessions.map(s => s.wpm)) : 0)} WPM</span>
-              </p>
+              <p className="text-2xl font-bold font-mono">{stats.avgWpm} <span className="text-xs opacity-50 font-normal">WPM</span></p>
+              <div className="text-xs opacity-60 mt-2 border-t border-[#E5E5E5] dark:border-[#27272A] pt-1.5 flex justify-between font-mono">
+                <span>Best: {stats.bestWpm} WPM</span>
+              </div>
             </div>
 
-            {/* Accuracy card */}
-            <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-5 shadow-sm">
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-4 bg-transparent rounded-xl">
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Accuracy</span>
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Accuracy</span>
+                <ShieldCheck className="w-4 h-4 opacity-50" />
               </div>
-              <p className="text-3xl font-light tracking-wide text-emerald-500">{stats.avgAccuracy}%</p>
-              <p className="text-[10px] opacity-45 mt-1 border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-1.5">Goal is 95%+</p>
+              <p className="text-2xl font-bold font-mono">{stats.avgAccuracy}%</p>
+              <div className="text-xs opacity-60 mt-2 border-t border-[#E5E5E5] dark:border-[#27272A] pt-1.5 font-sans">Precision Ratio</div>
             </div>
 
-            {/* Streak card */}
-            <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-5 shadow-sm">
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-4 bg-transparent rounded-xl">
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Daily Streak</span>
-                <Flame className={`w-4 h-4 ${stats.streak > 0 ? 'text-[var(--accent-app)] dark:text-[var(--accent-app)]' : 'opacity-30'}`} />
+                <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Daily Streak</span>
+                <Flame className="w-4 h-4 text-amber-500 opacity-80" />
               </div>
-              <p className="text-3xl font-light tracking-wide">{stats.streak} <span className="text-xs opacity-50 font-normal">Days</span></p>
-              <p className="text-[10px] opacity-45 mt-1 border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-1.5">
-                {stats.streak > 0 ? "Keep it burning!" : "Break the chain?"}
-              </p>
+              <p className="text-2xl font-bold font-mono">{stats.streak} <span className="text-xs opacity-50 font-normal">Days</span></p>
+              <div className="text-xs opacity-60 mt-2 border-t border-[#E5E5E5] dark:border-[#27272A] pt-1.5 font-sans">Consecutive Days</div>
             </div>
 
-            {/* Total time card */}
-            <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-5 shadow-sm">
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-4 bg-transparent rounded-xl">
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Total Time</span>
+                <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Time Logged</span>
                 <Clock className="w-4 h-4 opacity-50" />
               </div>
-              <p className="text-3xl font-light tracking-wide">{formatDurationText(stats.totalDuration)}</p>
-              <p className="text-[10px] opacity-45 mt-1 border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-1.5">{stats.totalSessions} total runs</p>
+              <p className="text-2xl font-bold font-mono">{formatDurationText(stats.totalDuration)}</p>
+              <div className="text-xs opacity-60 mt-2 border-t border-[#E5E5E5] dark:border-[#27272A] pt-1.5 font-sans">{stats.totalSessions} Sessions</div>
             </div>
           </div>
 
-          {/* Chart block */}
           {stats.chartData.length > 0 && (
-            <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-6 shadow-sm">
-              <h3 className="text-sm font-semibold tracking-wide border-b border-[#E6E1D8] dark:border-[#2F2D2A] pb-3 mb-6">
-                WPM Speed & Accuracy Progression
-              </h3>
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-5 bg-transparent rounded-xl font-sans">
+              <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block mb-4">
+                Speed & Accuracy Progression
+              </span>
               
-              <div className="h-64 w-full">
+              <div className="h-60 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={stats.chartData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                    <XAxis dataKey="date" tick={{ fontSize: 10 }} opacity={0.5} />
-                    <YAxis yAxisId="left" tick={{ fontSize: 10 }} label={{ value: 'WPM', angle: -90, position: 'insideLeft', fontSize: 10 }} opacity={0.5} />
-                    <YAxis yAxisId="right" orientation="right" domain={[50, 100]} tick={{ fontSize: 10 }} label={{ value: 'Accuracy %', angle: 90, position: 'insideRight', fontSize: 10 }} opacity={0.5} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'var(--card-app)',
-                        borderColor: 'var(--border-app)',
-                        borderRadius: '8px',
-                        fontSize: '11px',
-                        color: 'var(--text-app)'
-                      }}
-                    />
-                    <Line yAxisId="left" type="monotone" dataKey="wpm" name="Speed (WPM)" stroke="var(--accent-app)" strokeWidth={2.5} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                    <Line yAxisId="right" type="monotone" dataKey="accuracy" name="Accuracy (%)" stroke="#10b981" strokeWidth={1.5} dot={{ r: 3 }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#27272A" opacity={0.2} />
+                    <XAxis dataKey="date" stroke="#888888" fontSize={10} tickLine={false} />
+                    <YAxis stroke="#888888" fontSize={10} tickLine={false} domain={[0, 'auto']} />
+                    <Tooltip contentStyle={{ backgroundColor: '#09090B', border: '1px solid #27272A', color: '#FFF', fontSize: '11px' }} />
+                    <Line type="monotone" dataKey="wpm" name="Speed (WPM)" stroke="#09090B" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="accuracy" name="Accuracy (%)" stroke="#10B981" strokeWidth={1.5} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
           )}
 
-          {/* AI Typing Coach Insights Panel */}
           {(() => {
             const weakestKeys = Object.entries(stats.heatmap)
               .filter(([key]) => key !== 'space' && key !== 'enter')
@@ -347,14 +365,16 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
 
             if (weakestKeys.length > 0 && onStartCustomReview) {
               return (
-                <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="border border-[#E5E5E5] dark:border-[#27272A] p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#FAFAFA] dark:bg-[#121215] rounded-xl font-sans">
                   <div className="space-y-1 text-left">
                     <div className="flex items-center gap-2">
-                      <span className="text-[9px] bg-[var(--accent-app)]/10 text-[var(--accent-app)] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">AI Typing Coach</span>
-                      <h3 className="text-sm font-semibold tracking-wide">Weak Keys Practice Insights</h3>
+                      <span className="text-[10px] border border-[#E5E5E5] dark:border-[#27272A] px-2 py-0.5 font-semibold uppercase tracking-wider rounded-md bg-[#FFFFFF] dark:bg-[#18181B]">
+                        Typing Coach
+                      </span>
+                      <h3 className="text-xs font-semibold">Weak Keys Practice Recommendation</h3>
                     </div>
-                    <p className="text-xs opacity-75 max-w-xl">
-                      Your performance heatmap indicates frequent errors on: <span className="font-mono font-bold text-[var(--accent-app)] uppercase">{weakestKeys.join(', ')}</span>. Practice a customized drill containing words focusing heavily on these characters.
+                    <p className="text-xs opacity-70 max-w-xl font-sans leading-relaxed">
+                      Frequent errors detected on: <span className="font-bold uppercase font-mono">{weakestKeys.join(', ')}</span>. Execute targeted drill containing vocabulary focusing on these characters.
                     </p>
                   </div>
                   <button
@@ -369,9 +389,9 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
                       const generatedText = generatedWords.join(' ');
                       onStartCustomReview(generatedText, `Weak Keys: ${weakestKeys.join(' ').toUpperCase()}`);
                     }}
-                    className="px-4 py-2.5 rounded-lg bg-[var(--accent-app)] text-white text-xs font-semibold hover:opacity-90 transition-all cursor-pointer shadow-sm shrink-0 whitespace-nowrap self-start md:self-auto"
+                    className="px-4 py-2 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-semibold text-xs rounded-md hover:opacity-90 transition-all cursor-pointer shrink-0"
                   >
-                    Start Focused Practice
+                    Generate Recovery Drill
                   </button>
                 </div>
               );
@@ -379,16 +399,9 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
             return null;
           })()}
 
-          {/* Error Heatmap keyboard overlay */}
-          <div className="space-y-3">
+          <div className="space-y-3 font-sans">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold tracking-wide">Problem Keys Heatmap</h3>
-              <div className="group relative cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
-                <Info className="w-3.5 h-3.5" />
-                <span className="absolute bottom-full left-1/2 -translate-x-1/2 w-48 p-2 rounded bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] text-[9px] leading-relaxed hidden group-hover:block shadow-sm z-30">
-                  Keys are shaded based on error frequency. Deeper orange/terracotta keys indicate keys where you make the most errors.
-                </span>
-              </div>
+              <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Weak Keys Heatmap</span>
             </div>
             <VisualKeyboard
               layoutName="qwerty"
@@ -396,36 +409,35 @@ export default function Dashboard({ profileId, onStartCustomReview }: DashboardP
             />
           </div>
 
-          {/* Achievements Cabinet */}
-          <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm font-semibold tracking-wide border-b border-[#E6E1D8] dark:border-[#2F2D2A] pb-3 mb-6 flex items-center gap-2">
-              <Award className="w-4.5 h-4.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
-              Achievements Cabinet
+          <div className="border border-[#E5E5E5] dark:border-[#27272A] p-6 font-sans bg-transparent rounded-xl">
+            <h3 className="text-xs font-semibold uppercase tracking-wider border-b border-[#E5E5E5] dark:border-[#27272A] pb-3 mb-6 flex items-center gap-2">
+              <Award className="w-4 h-4 opacity-80 text-amber-500" />
+              Achievements Unlocked
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {BADGES_LIST.map((b) => {
                 const isUnlocked = activeBadgesSet.has(b.id);
 
                 return (
                   <div
                     key={b.id}
-                    className={`flex gap-3.5 p-4 rounded-xl border transition-all ${
+                    className={`flex gap-3 p-3.5 border transition-all rounded-lg ${
                       isUnlocked
-                        ? 'bg-[#FAF7F2] dark:bg-[#181715] border-[var(--accent-app)]/30'
-                        : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-40 grayscale'
+                        ? 'border-[#09090B] dark:border-[#FAFAFA] bg-transparent'
+                        : 'border-[#E5E5E5]/50 dark:border-[#27272A]/50 opacity-40 grayscale'
                     }`}
                   >
-                    <div className="text-2xl h-10 w-10 flex items-center justify-center rounded-full bg-[#FFFDFB] dark:bg-[#201E1C] shadow-sm shrink-0 border border-[#E6E1D8] dark:border-[#2F2D2A]">
+                    <div className="text-xl h-8 w-8 flex items-center justify-center border border-[#E5E5E5] dark:border-[#27272A] shrink-0 font-sans rounded-md">
                       {b.icon}
                     </div>
                     <div>
-                      <h4 className={`text-xs font-semibold tracking-wide ${isUnlocked ? 'text-[var(--accent-app)] dark:text-[var(--accent-app)]' : ''}`}>
+                      <h4 className="text-xs font-semibold">
                         {b.name}
                       </h4>
-                      <p className="text-[10px] opacity-65 mt-0.5 leading-relaxed">{b.desc}</p>
+                      <p className="text-[11px] opacity-60 mt-0.5 font-sans leading-relaxed">{b.desc}</p>
                       {isUnlocked && (
-                        <span className="inline-block mt-2 text-[8px] font-bold uppercase tracking-wider text-emerald-500 bg-emerald-500/10 px-1 rounded">
+                        <span className="inline-block mt-1 text-[9px] font-semibold uppercase tracking-wider text-emerald-500 border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.2 rounded-md">
                           Unlocked
                         </span>
                       )}

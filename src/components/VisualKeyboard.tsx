@@ -82,7 +82,14 @@ export default function VisualKeyboard({
     // 1. Highlight state (Active character or target keys list) takes absolute precedence
     const isHighlighted = normalizedHighlight === keyNormal || normalizedHighlightKeys.includes(keyNormal);
     if (isHighlighted && !maxErrors) {
-      return { backgroundColor: 'var(--accent-app)', color: '#FFFFFF', borderColor: 'transparent' };
+      return {
+        backgroundColor: 'var(--text-app)',
+        color: 'var(--bg-app)',
+        borderColor: 'var(--text-app)',
+        boxShadow: '0 0 14px rgba(0, 0, 0, 0.25)',
+        transform: 'translateY(-1px) scale(1.05)',
+        zIndex: 20
+      };
     }
 
     // 2. Heatmap state
@@ -90,11 +97,25 @@ export default function VisualKeyboard({
       const errorCount = heatmap[keyNormal] || 0;
       if (errorCount > 0) {
         const ratio = errorCount / maxErrors;
-        let bg = 'var(--accent-app)';
-        if (ratio <= 0.25) bg = 'rgba(217, 107, 67, 0.4)';
-        else if (ratio <= 0.5) bg = 'rgba(217, 107, 67, 0.6)';
-        else if (ratio <= 0.75) bg = 'rgba(217, 107, 67, 0.8)';
-        return { backgroundColor: bg, color: '#FFFFFF', borderColor: 'transparent' };
+        let bg = 'rgba(239, 68, 68, 0.15)';
+        let border = 'rgba(239, 68, 68, 0.3)';
+        let text = '#EF4444';
+
+        if (ratio > 0.6) {
+          bg = '#EF4444';
+          border = '#DC2626';
+          text = '#FFFFFF';
+        } else if (ratio > 0.3) {
+          bg = 'rgba(239, 68, 68, 0.4)';
+          border = '#EF4444';
+          text = '#FFFFFF';
+        }
+
+        return {
+          backgroundColor: bg,
+          borderColor: border,
+          color: text
+        };
       }
     }
 
@@ -103,21 +124,20 @@ export default function VisualKeyboard({
       const finger = FINGER_MAP[keyNormal];
       if (finger) {
         let fingerBg = 'var(--key-bg)';
-        if (finger.endsWith('1')) fingerBg = 'var(--finger-pinky)';
-        else if (finger.endsWith('2')) fingerBg = 'var(--finger-ring)';
-        else if (finger.endsWith('3')) fingerBg = 'var(--finger-middle)';
-        else if (finger.endsWith('4')) fingerBg = 'var(--finger-index)';
-        else if (finger.endsWith('5')) fingerBg = 'var(--finger-thumb)';
+        let fingerBorder = 'var(--key-border)';
+        
+        if (finger.endsWith('1')) { fingerBg = 'rgba(244, 63, 94, 0.1)'; fingerBorder = 'rgba(244, 63, 94, 0.25)'; } // Pinky
+        else if (finger.endsWith('2')) { fingerBg = 'rgba(245, 158, 11, 0.1)'; fingerBorder = 'rgba(245, 158, 11, 0.25)'; } // Ring
+        else if (finger.endsWith('3')) { fingerBg = 'rgba(16, 185, 129, 0.1)'; fingerBorder = 'rgba(16, 185, 129, 0.25)'; } // Middle
+        else if (finger.endsWith('4')) { fingerBg = 'rgba(59, 130, 246, 0.1)'; fingerBorder = 'rgba(59, 130, 246, 0.25)'; } // Index
+        else if (finger.endsWith('5')) { fingerBg = 'rgba(107, 114, 128, 0.1)'; fingerBorder = 'rgba(107, 114, 128, 0.25)'; } // Thumb
 
-        return { backgroundColor: fingerBg, borderColor: 'var(--key-border)' };
+        return { backgroundColor: fingerBg, borderColor: fingerBorder };
       }
-      
-      // Default to utility key background if it is a general key without mapping
-      return { backgroundColor: 'var(--finger-utility)', borderColor: 'var(--key-border)' };
     }
 
     // 4. Default Key background
-    return { backgroundColor: 'var(--key-bg)', borderColor: 'var(--key-border)' };
+    return {};
   };
 
   const getKeyDimensions = (keyText: string) => {
@@ -130,31 +150,30 @@ export default function VisualKeyboard({
 
     if (isCompact) {
       // Compact sizing classes
-      let width = "w-8 sm:w-9";
-      if (isSpace) width = "w-[50%] h-8 sm:h-9";
-      else if (isBackspace) width = "w-12 sm:w-14";
-      else if (isTab) width = "w-10";
-      else if (isCaps) width = "w-12";
-      else if (isEnter) width = "w-14";
-      else if (isShift) width = "w-14 sm:w-16";
+      let width = "w-7 sm:w-8.5";
+      if (isSpace) width = "w-[48%] h-8 sm:h-9";
+      else if (isBackspace) width = "w-11 sm:w-13";
+      else if (isTab) width = "w-9";
+      else if (isCaps) width = "w-11";
+      else if (isEnter) width = "w-13";
+      else if (isShift) width = "w-13 sm:w-15";
       
       return { width, height: "h-8 sm:h-9", text: "text-[9px]" };
     } else {
       // Standard sizing classes
-      let width = "w-10 sm:w-11";
-      if (isSpace) width = "w-[60%] h-10 sm:h-11";
+      let width = "w-9 sm:w-11";
+      if (isSpace) width = "w-[58%] h-10 sm:h-11";
       else if (isBackspace) width = "w-16 sm:w-20";
-      else if (isTab) width = "w-14";
-      else if (isCaps) width = "w-16";
-      else if (isEnter) width = "w-20";
-      else if (isShift) width = "w-20 sm:w-24";
+      else if (isTab) width = "w-13 sm:w-14";
+      else if (isCaps) width = "w-15 sm:w-16";
+      else if (isEnter) width = "w-18 sm:w-20";
+      else if (isShift) width = "w-18 sm:w-22";
       
       return { width, height: "h-10 sm:h-11", text: "text-xs" };
     }
   };
 
   const renderHandIndicator = () => {
-    // Only display hands guide in standard size and if showFingers is true
     if (isCompact || !showFingers || !activeFinger) return null;
 
     const leftFingers = ["L1", "L2", "L3", "L4"];
@@ -162,58 +181,60 @@ export default function VisualKeyboard({
     const isSpace = activeFinger === "L5" || activeFinger === "R5";
 
     return (
-      <div className="flex items-center justify-center gap-12 mt-6 animate-fade-in opacity-80">
+      <div className="flex items-center justify-center gap-10 mt-5 pt-4 border-t border-[#E5E5E5] dark:border-[#27272A] animate-fade-in opacity-85 font-mono">
         <div className="flex flex-col items-center">
-          <div className="flex items-end gap-1.5 h-10 mb-1">
+          <div className="flex items-end gap-1.5 h-8 mb-1">
             {leftFingers.map((f) => (
               <div
                 key={f}
-                className={`w-3.5 rounded-t-full transition-all duration-150 ${
+                className={`w-3 rounded-t-sm transition-all duration-150 ${
                   activeFinger === f 
-                    ? "bg-[var(--accent-app)] dark:bg-[var(--accent-app)] h-9" 
-                    : "bg-[#E6E1D8] dark:bg-[#2F2D2A] h-6"
+                    ? "bg-[#09090B] dark:bg-[#FAFAFA] h-8 shadow-xs" 
+                    : "bg-[#E5E5E5] dark:bg-[#27272A] h-5 opacity-40"
                 }`}
               />
             ))}
           </div>
-          <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Left Hand</span>
+          <span className="text-[9px] uppercase font-bold tracking-widest opacity-50">LEFT_HAND</span>
         </div>
 
         <div className="flex flex-col items-center">
           <div
-            className={`w-20 h-3 rounded-full transition-all duration-150 mb-2 ${
-              isSpace ? "bg-[var(--accent-app)] dark:bg-[var(--accent-app)]" : "bg-[#E6E1D8] dark:bg-[#2F2D2A]"
+            className={`w-16 h-2.5 rounded-sm transition-all duration-150 mb-1.5 ${
+              isSpace ? "bg-[#09090B] dark:bg-[#FAFAFA] shadow-xs" : "bg-[#E5E5E5] dark:bg-[#27272A] opacity-40"
             }`}
           />
-          <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Thumbs</span>
+          <span className="text-[9px] uppercase font-bold tracking-widest opacity-50">THUMBS</span>
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="flex items-end gap-1.5 h-10 mb-1">
+          <div className="flex items-end gap-1.5 h-8 mb-1">
             {rightFingers.map((f) => (
               <div
                 key={f}
-                className={`w-3.5 rounded-t-full transition-all duration-150 ${
+                className={`w-3 rounded-t-sm transition-all duration-150 ${
                   activeFinger === f 
-                    ? "bg-[var(--accent-app)] dark:bg-[var(--accent-app)] h-9" 
-                    : "bg-[#E6E1D8] dark:bg-[#2F2D2A] h-6"
+                    ? "bg-[#09090B] dark:bg-[#FAFAFA] h-8 shadow-xs" 
+                    : "bg-[#E5E5E5] dark:bg-[#27272A] h-5 opacity-40"
                 }`}
               />
             ))}
           </div>
-          <span className="text-[10px] uppercase font-bold tracking-wider opacity-40">Right Hand</span>
+          <span className="text-[9px] uppercase font-bold tracking-widest opacity-50">RIGHT_HAND</span>
         </div>
       </div>
     );
   };
 
   return (
-    <div className={`w-full mx-auto p-4 rounded-xl bg-[#FAF7F2] dark:bg-[#1B1A18] border border-[#E6E1D8] dark:border-[#2F2D2A] select-none shadow-sm transition-all ${isCompact ? 'max-w-2xl' : 'max-w-3xl'}`}>
-      <div className="flex flex-col gap-1.5">
+    <div className={`w-full mx-auto p-4 border border-[#E5E5E5] dark:border-[#27272A] bg-[#FFFFFF] dark:bg-[#121215] shadow-xs select-none transition-all font-mono rounded-lg ${isCompact ? 'max-w-2xl' : 'max-w-3xl'}`}>
+      <div className="flex flex-col gap-1.5 font-mono">
         {layout.map((row, rIdx) => (
           <div key={rIdx} className="flex justify-center gap-1.5 w-full">
             {row.map((keyText, kIdx) => {
               const isSpace = keyText === "Space";
+              const keyNormal = normalizeKey(keyText);
+              const isHighlighted = normalizedHighlight === keyNormal || normalizedHighlightKeys.includes(keyNormal);
               const { width, height, text } = getKeyDimensions(keyText);
               const customStyle = getKeyColorStyle(keyText);
 
@@ -221,7 +242,9 @@ export default function VisualKeyboard({
                 <div
                   key={kIdx}
                   style={customStyle}
-                  className={`border flex items-center justify-center font-medium font-sans select-none rounded-lg transition-all duration-150 capitalize shadow-sm ${width} ${height} ${text}`}
+                  className={`border border-[#E5E5E5] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA] flex items-center justify-center font-bold font-mono select-none rounded-md transition-all duration-150 uppercase shadow-[0_1.5px_0_0_#E5E5E5] dark:shadow-[0_1.5px_0_0_#27272A] ${width} ${height} ${text} ${
+                    isHighlighted ? 'ring-2 ring-[#09090B] dark:ring-[#FAFAFA]' : ''
+                  }`}
                 >
                   {isSpace ? "" : keyText}
                 </div>

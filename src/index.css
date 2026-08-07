@@ -1,114 +1,120 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-light: #FAF9F6;
-  --color-text-light: #2E2C29;
-  --color-accent-light: #D96B43;
-  --color-muted-light: #E6E1D8;
+  --color-bg-light: #FFFFFF;
+  --color-text-light: #09090B;
+  --color-accent-light: #000000;
+  --color-muted-light: #F4F4F5;
   --color-card-light: #FFFFFF;
-  --color-border-light: #EBE7DF;
+  --color-border-light: #E5E5E5;
 
-  --color-bg-dark: #323437;
-  --color-text-dark: #D1D2D3;
-  --color-accent-dark: #E48460;
-  --color-muted-dark: #3F4245;
-  --color-card-dark: #2C2E30;
-  --color-border-dark: #3F4245;
+  --color-bg-dark: #09090B;
+  --color-text-dark: #FAFAFA;
+  --color-accent-dark: #FFFFFF;
+  --color-muted-dark: #18181B;
+  --color-card-dark: #121215;
+  --color-border-dark: #27272A;
   
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Custom CSS variables linked to the theme values above */
+/* Custom CSS variables linked to monochrome + cryptic theme values */
 :root {
-  --bg-app: var(--color-bg-active, var(--color-bg-light));
+  --bg-app: var(--color-bg-active, #FFFFFF);
   --text-app: var(--color-text-light);
-  --accent-app: var(--color-accent-active, var(--color-accent-light));
-  --card-app: var(--color-card-active, var(--color-card-light));
-  --muted-app: var(--color-muted-light);
-  --border-app: var(--color-border-active, var(--color-border-light));
+  --accent-app: var(--color-accent-active, #000000);
+  --card-app: var(--color-card-active, #FFFFFF);
+  --muted-app: #F4F4F5;
+  --border-app: var(--color-border-active, #E5E5E5);
   --key-bg: #FFFFFF;
-  --key-border: #EBE7DF;
-  /* Keyboard Finger Colors - Light mode */
-  --finger-pinky: #FADBC8;
-  --finger-ring: #F4EAE0;
-  --finger-middle: #E6ECE0;
-  --finger-index: #E0EBF7;
-  --finger-thumb: #FAF9F5;
-  --finger-utility: #F0EDE6;
+  --key-border: #E5E5E5;
+  --key-text: #09090B;
+
+  /* Keyboard Finger Colors - Stark Monochrome / Subtle Slate */
+  --finger-pinky: #F4F4F5;
+  --finger-ring: #E4E4E7;
+  --finger-middle: #D4D4D8;
+  --finger-index: #E4E4E7;
+  --finger-thumb: #FAFAFA;
+  --finger-utility: #F4F4F5;
 }
 
 :root.dark {
-  --bg-app: var(--color-bg-active, var(--color-bg-dark));
+  --bg-app: var(--color-bg-active, #09090B);
   --text-app: var(--color-text-dark);
-  --accent-app: var(--color-accent-active, var(--color-accent-dark));
-  --card-app: var(--color-card-active, var(--color-card-dark));
-  --muted-app: var(--color-muted-dark);
-  --border-app: var(--color-border-active, var(--color-border-dark));
-  --key-bg: #2C2E30;
-  --key-border: #3F4245;
-  /* Keyboard Finger Colors - Dark mode */
-  --finger-pinky: #483025;
-  --finger-ring: #3D352F;
-  --finger-middle: #2B352A;
-  --finger-index: #28303B;
-  --finger-thumb: #252422;
-  --finger-utility: #1E1D1B;
+  --accent-app: var(--color-accent-active, #FFFFFF);
+  --card-app: var(--color-card-active, #121215);
+  --muted-app: #18181B;
+  --border-app: var(--color-border-active, #27272A);
+  --key-bg: #121215;
+  --key-border: #27272A;
+  --key-text: #FAFAFA;
+
+  /* Keyboard Finger Colors - Dark Mode Technical Gray */
+  --finger-pinky: #18181B;
+  --finger-ring: #27272A;
+  --finger-middle: #3F3F46;
+  --finger-index: #27272A;
+  --finger-thumb: #09090B;
+  --finger-utility: #18181B;
 }
 
-/* Color Accent Overrides & Overall Theme Tinting */
-.accent-terracotta {
-  --color-accent-active: #D96B43;
-  --color-bg-active: #FAF9F6;
-  --color-card-active: #FFFFFF;
-  --color-border-active: #EBE7DF;
-}
-.dark .accent-terracotta, .accent-terracotta.dark {
-  --color-accent-active: #E48460;
-  --color-bg-active: #323437;
-  --color-card-active: #2C2E30;
-  --color-border-active: #3F4245;
+/* Clean Monochrome Design System */
+:root {
+  --bg-app: #FFFFFF;
+  --text-app: #09090B;
+  --accent-app: #09090B;
+  --card-app: #FFFFFF;
+  --muted-app: #F4F4F5;
+  --border-app: #E5E5E5;
 }
 
-.accent-forest {
-  --color-accent-active: #4F795B;
-  --color-bg-active: #F4F6F4;
-  --color-card-active: #FFFFFF;
-  --color-border-active: #E2E6E2;
-}
-.dark .accent-forest, .accent-forest.dark {
-  --color-accent-active: #639A72;
-  --color-bg-active: #2D322E;
-  --color-card-active: #252A26;
-  --color-border-active: #3A413C;
+:root.dark {
+  --bg-app: #09090B;
+  --text-app: #FAFAFA;
+  --accent-app: #FAFAFA;
+  --card-app: #121215;
+  --muted-app: #18181B;
+  --border-app: #27272A;
 }
 
-.accent-oasis {
-  --color-accent-active: #3C7A89;
-  --color-bg-active: #F2F6F7;
-  --color-card-active: #FFFFFF;
-  --color-border-active: #E0E6E8;
-}
-.dark .accent-oasis, .accent-oasis.dark {
-  --color-accent-active: #4C99AA;
-  --color-bg-active: #2D3234;
-  --color-card-active: #25292A;
-  --color-border-active: #3A4042;
+:root.dark.dark-shade-pitch {
+  --bg-app: #000000;
+  --card-app: #09090B;
+  --muted-app: #121215;
+  --border-app: #1C1C20;
 }
 
-.accent-sand {
-  --color-accent-active: #C49F5D;
-  --color-bg-active: #F8F6F2;
-  --color-card-active: #FFFFFF;
-  --color-border-active: #E6E2DA;
-}
-.dark .accent-sand, .accent-sand.dark {
-  --color-accent-active: #D4B06E;
-  --color-bg-active: #34322F;
-  --color-card-active: #2B2926;
-  --color-border-active: #42403A;
+:root.dark.dark-shade-obsidian {
+  --bg-app: #09090B;
+  --card-app: #121215;
+  --muted-app: #18181B;
+  --border-app: #27272A;
 }
 
-/* Base HTML App Font Size Overrides (rem scale base) */
+:root.dark.dark-shade-charcoal {
+  --bg-app: #141417;
+  --card-app: #1B1B1F;
+  --muted-app: #232328;
+  --border-app: #2F2F37;
+}
+
+:root.dark.dark-shade-slate {
+  --bg-app: #1A1B20;
+  --card-app: #22242B;
+  --muted-app: #2B2D36;
+  --border-app: #363944;
+}
+
+:root.dark.dark-shade-dusk {
+  --bg-app: #22242B;
+  --card-app: #2A2C35;
+  --muted-app: #343742;
+  --border-app: #414553;
+}
+
+/* Base HTML App Font Size Overrides */
 html.size-app-small {
   font-size: 14px !important;
 }
@@ -124,17 +130,17 @@ html.font-app-sans {
   font-family: var(--font-sans) !important;
 }
 html.font-app-serif {
-  font-family: Georgia, Cambria, "Times New Roman", Times, serif !important;
+  font-family: Georgia, Cambria, "Times New Roman", serif !important;
 }
 html.font-app-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-family: var(--font-mono) !important;
 }
 
 body {
   background-color: var(--bg-app);
   color: var(--text-app);
   font-family: var(--font-sans);
-  transition: background-color 0.2s ease-out, color 0.2s ease-out;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -143,21 +149,21 @@ body {
 
 /* Custom transitions and scrollbar layout */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border-app);
-  border-radius: 9999px;
+  border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-app);
+  background: #A1A1AA;
 }
 
-/* Non-flashing solid terracotta cursor blink animation */
+/* Caret blink animation */
 @keyframes caretBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
@@ -165,15 +171,21 @@ body {
 
 .custom-caret {
   width: 2px;
-  background-color: var(--accent-app);
+  background-color: var(--text-app);
   animation: caretBlink 1s infinite;
 }
 
-/* Focus and inputs styling */
+/* Focus and inputs styling - Brutalist Monochrome */
 input, textarea, select {
   outline: none;
+  font-family: var(--font-mono);
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--accent-app) !important;
-  box-shadow: 0 0 0 2px rgba(217, 107, 67, 0.15);
+  border-color: var(--text-app) !important;
+  box-shadow: 0 0 0 1px var(--text-app);
 }
+
+.font-mono-tech {
+  font-family: var(--font-mono);
+}
+

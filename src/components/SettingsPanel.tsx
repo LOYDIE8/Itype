@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, Keyboard, RefreshCw, Type, Eye, ShieldAlert } from 'lucide-react';
+import { Volume2, VolumeX, Keyboard, RefreshCw, Type, Eye, ShieldAlert, Moon } from 'lucide-react';
 import { Profile } from '../types/electron';
 
 interface SettingsPanelProps {
@@ -81,221 +81,155 @@ export default function SettingsPanel({ profile, onUpdateProfile, onSwitchProfil
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 animate-fade-in text-[#2E2C29] dark:text-[#ECE8E1]">
-      <div className="mb-8">
-        <h1 className="text-2xl font-light tracking-wide mb-1">Settings</h1>
-        <p className="text-sm opacity-60">Personalize your typing environment.</p>
+    <div className="max-w-2xl mx-auto py-6 px-4 animate-fade-in text-[#09090B] dark:text-[#FAFAFA] font-sans">
+      <div className="mb-8 border-b border-[#E5E5E5] dark:border-[#27272A] pb-4">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="status-dot"></span>
+          <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Preferences</span>
+        </div>
+        <h1 className="text-2xl font-light tracking-tight font-sans">System Settings</h1>
+        <p className="text-xs opacity-60 font-sans mt-0.5">Configure typing behavior, audio feedback, and visual options.</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 font-sans">
         {/* Profile Card */}
-        <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl p-5 shadow-sm flex items-center justify-between">
+        <div className="border border-[#E5E5E5] dark:border-[#27272A] p-5 flex items-center justify-between rounded-lg bg-[#FAFAFA] dark:bg-[#121215]">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#FAF7F2] dark:bg-[#181715] border border-[#E6E1D8] dark:border-[#2F2D2A] flex items-center justify-center font-medium">
+            <div className="w-10 h-10 border border-[#E5E5E5] dark:border-[#27272A] flex items-center justify-center font-bold text-xs rounded-md bg-[#FFFFFF] dark:bg-[#18181B]">
               {profile.name.substring(0, 2).toUpperCase()}
             </div>
             <div>
-              <p className="text-sm font-semibold tracking-wide">{profile.name}</p>
-              <p className="text-xs opacity-50">Local profile created on {new Date(profile.created_at).toLocaleDateString()}</p>
+              <p className="text-sm font-semibold">{profile.name}</p>
+              <p className="text-xs opacity-50">Operator #{profile.id} • Registered {new Date(profile.created_at).toLocaleDateString()}</p>
             </div>
           </div>
           <button
             onClick={onSwitchProfile}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] text-xs font-semibold hover:bg-[#FAF7F2] dark:hover:bg-[#181715] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E5E5E5] dark:border-[#27272A] text-xs font-medium rounded-md hover:bg-[#09090B] hover:text-[#FFFFFF] dark:hover:bg-[#FAFAFA] dark:hover:text-[#09090B] transition-all cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            Switch Profile
+            Switch Operator
           </button>
         </div>
 
         {/* Configurations list */}
-        <div className="bg-[#FFFDFB] dark:bg-[#201E1C] border border-[#E6E1D8] dark:border-[#2F2D2A] rounded-xl shadow-sm divide-y divide-[#E6E1D8] dark:divide-[#2F2D2A]">
+        <div className="border border-[#E5E5E5] dark:border-[#27272A] divide-y divide-[#E5E5E5] dark:divide-[#27272A] rounded-lg bg-transparent overflow-hidden">
           
           {/* Theme setting */}
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <Eye className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+              <Eye className="w-4 h-4 opacity-60 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block">Interface Theme</label>
-                <span className="text-xs opacity-50 block">Switch between light cream and warm charcoal dark mode.</span>
+                <label className="text-xs font-semibold block">Interface Theme</label>
+                <span className="text-[11px] opacity-50 block">Switch between crisp light mode and dark mode.</span>
               </div>
             </div>
             <select
               value={settings.theme}
               onChange={(e) => updateSetting('theme', e.target.value)}
-              className="p-2 text-xs rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] bg-transparent text-[#2E2C29] dark:text-[#ECE8E1] cursor-pointer"
+              className="p-1.5 text-xs border border-[#E5E5E5] dark:border-[#27272A] bg-transparent font-sans rounded-md cursor-pointer"
             >
-              <option value="light" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Light Cream</option>
-              <option value="dark" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Warm Charcoal</option>
+              <option value="light" className="bg-[#FFFFFF] dark:bg-[#09090B]">Light Mode</option>
+              <option value="dark" className="bg-[#FFFFFF] dark:bg-[#09090B]">Dark Mode</option>
             </select>
           </div>
 
-          {/* Accent Color Theme selection */}
-          <div className="flex items-center justify-between p-5">
-            <div className="flex gap-3">
-              <Eye className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
-              <div>
-                <label className="text-sm font-medium tracking-wide block">Color Accent Theme</label>
-                <span className="text-xs opacity-50 block">Select a curated earth-tone accent for buttons and focus elements.</span>
+          {/* Dark Mode Background Tone */}
+          {settings.theme === 'dark' && (
+            <div className="flex items-center justify-between p-4 bg-[#FAFAFA]/50 dark:bg-[#18181B]/40">
+              <div className="flex gap-3">
+                <Moon className="w-4 h-4 opacity-60 mt-0.5" />
+                <div>
+                  <label className="text-xs font-semibold block">Dark Background Tone</label>
+                  <span className="text-[11px] opacity-50 block">Adjust darkness intensity (pitch black to soft gray dusk).</span>
+                </div>
               </div>
+              <select
+                value={settings.darkShade || 'obsidian'}
+                onChange={(e) => updateSetting('darkShade', e.target.value)}
+                className="p-1.5 text-xs border border-[#E5E5E5] dark:border-[#27272A] bg-transparent font-sans rounded-md cursor-pointer"
+              >
+                <option value="pitch" className="bg-[#FFFFFF] dark:bg-[#09090B]">Pitch Black (OLED)</option>
+                <option value="obsidian" className="bg-[#FFFFFF] dark:bg-[#09090B]">Obsidian (Default)</option>
+                <option value="charcoal" className="bg-[#FFFFFF] dark:bg-[#09090B]">Soft Charcoal</option>
+                <option value="slate" className="bg-[#FFFFFF] dark:bg-[#09090B]">Deep Slate</option>
+                <option value="dusk" className="bg-[#FFFFFF] dark:bg-[#09090B]">Muted Dusk (Softest)</option>
+              </select>
             </div>
-            <div className="flex items-center gap-3">
-              {[
-                { name: 'terracotta', hex: '#D96B43', label: 'Orange' },
-                { name: 'forest', hex: '#4F795B', label: 'Green' },
-                { name: 'oasis', hex: '#3C7A89', label: 'Teal' },
-                { name: 'sand', hex: '#C49F5D', label: 'Gold' }
-              ].map((color) => {
-                const isActive = (settings.accentColor || 'terracotta') === color.name;
-                return (
-                  <button
-                    key={color.name}
-                    onClick={() => updateSetting('accentColor', color.name)}
-                    className={`w-6 h-6 rounded-full border transition-all cursor-pointer flex items-center justify-center ${
-                      isActive 
-                        ? 'border-[#2E2C29] dark:border-[#ECE8E1] scale-110 shadow-sm' 
-                        : 'border-[#E6E1D8] dark:border-[#2F2D2A] hover:scale-105'
-                    }`}
-                    style={{ backgroundColor: color.hex }}
-                    title={color.label}
-                  >
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Global App Font Size */}
-          <div className="flex items-center justify-between p-5">
-            <div className="flex gap-3">
-              <Eye className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)]" />
-              <div>
-                <label className="text-sm font-medium tracking-wide block">Application Font Size</label>
-                <span className="text-xs opacity-50 block">Scale the size of menus, sidebars, and text globally.</span>
-              </div>
-            </div>
-            <div className="flex gap-1.5">
-              {(['small', 'medium', 'large'] as const).map((sz) => (
-                <button
-                  key={sz}
-                  onClick={() => updateSetting('appFontSize', sz)}
-                  className={`px-3 py-1.5 text-xs font-semibold capitalize rounded-lg border transition-all cursor-pointer ${
-                    (settings.appFontSize || 'medium') === sz
-                      ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                      : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
-                  }`}
-                >
-                  {sz}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Global App Font Type */}
-          <div className="flex items-center justify-between p-5">
-            <div className="flex gap-3">
-              <Eye className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)]" />
-              <div>
-                <label className="text-sm font-medium tracking-wide block">Application Font Family</label>
-                <span className="text-xs opacity-50 block">Choose the display typography family used across the app.</span>
-              </div>
-            </div>
-            <div className="flex gap-1.5">
-              {[
-                { name: 'sans', label: 'Sans-Serif' },
-                { name: 'serif', label: 'Serif' },
-                { name: 'mono', label: 'Monospace' }
-              ].map((font) => (
-                <button
-                  key={font.name}
-                  onClick={() => updateSetting('appFontType', font.name)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                    (settings.appFontType || 'sans') === font.name
-                      ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                      : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
-                  }`}
-                >
-                  {font.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          )}
 
           {/* Typing Engine Mode */}
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <ShieldAlert className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+              <ShieldAlert className="w-4 h-4 opacity-60 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block">Typing Rules</label>
-                <span className="text-xs opacity-50 block">Strict Mode forces you to correct mistakes before proceeding.</span>
+                <label className="text-xs font-semibold block">Typing Rules</label>
+                <span className="text-[11px] opacity-50 block">Strict Mode forces backspace correction before advancing caret.</span>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1 border border-[#E5E5E5] dark:border-[#27272A] p-0.5 rounded-md">
               <button
                 onClick={() => updateSetting('strictMode', true)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+                className={`px-3 py-1 text-xs font-medium rounded-sm transition-all cursor-pointer ${
                   settings.strictMode
-                    ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                    : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
+                    ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                    : 'opacity-60 hover:opacity-100'
                 }`}
               >
                 Strict
               </button>
               <button
                 onClick={() => updateSetting('strictMode', false)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+                className={`px-3 py-1 text-xs font-medium rounded-sm transition-all cursor-pointer ${
                   !settings.strictMode
-                    ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                    : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
+                    ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                    : 'opacity-60 hover:opacity-100'
                 }`}
               >
-                Free Form
+                Free
               </button>
             </div>
           </div>
 
           {/* Keyboard Layout */}
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <Keyboard className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+              <Keyboard className="w-4 h-4 opacity-60 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block">Virtual Keyboard Layout</label>
-                <span className="text-xs opacity-50 block">Changes the keyboard overlay layout mapped below typing lines.</span>
+                <label className="text-xs font-semibold block">Keyboard Layout</label>
+                <span className="text-[11px] opacity-50 block">Select key mapping standard.</span>
               </div>
             </div>
             <select
               value={settings.layout}
               onChange={(e) => updateSetting('layout', e.target.value)}
-              className="p-2 text-xs rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] bg-transparent text-[#2E2C29] dark:text-[#ECE8E1] cursor-pointer"
+              className="p-1.5 text-xs border border-[#E5E5E5] dark:border-[#27272A] bg-transparent font-sans rounded-md cursor-pointer"
             >
-              <option value="qwerty" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">QWERTY</option>
-              <option value="dvorak" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Dvorak</option>
-              <option value="colemak" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Colemak</option>
+              <option value="qwerty" className="bg-[#FFFFFF] dark:bg-[#09090B]">QWERTY</option>
+              <option value="dvorak" className="bg-[#FFFFFF] dark:bg-[#09090B]">Dvorak</option>
+              <option value="colemak" className="bg-[#FFFFFF] dark:bg-[#09090B]">Colemak</option>
             </select>
           </div>
 
           {/* Sound Effects */}
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
               {settings.sound ? (
-                <Volume2 className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+                <Volume2 className="w-4 h-4 opacity-60 mt-0.5" />
               ) : (
-                <VolumeX className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+                <VolumeX className="w-4 h-4 opacity-60 mt-0.5" />
               )}
               <div>
-                <label className="text-sm font-medium tracking-wide block">Sound Effects</label>
-                <span className="text-xs opacity-50 block">Synthesizer audio clicks on typing and short buzz on errors.</span>
+                <label className="text-xs font-semibold block">Keypress Click Audio</label>
+                <span className="text-[11px] opacity-50 block">Synthesized mechanical switch audio on key down.</span>
               </div>
             </div>
             <button
               onClick={() => updateSetting('sound', !settings.sound)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer border transition-all ${
+              className={`px-3 py-1 text-xs font-medium border rounded-md transition-all cursor-pointer ${
                 settings.sound
-                  ? 'bg-[var(--accent-app)] text-white border-[var(--accent-app)]'
-                  : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
+                  ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]'
+                  : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60'
               }`}
             >
               {settings.sound ? "Enabled" : "Disabled"}
@@ -306,35 +240,36 @@ export default function SettingsPanel({ profile, onUpdateProfile, onSwitchProfil
           {settings.sound && (
             <>
               {/* Keyboard Sound Profile */}
-              <div className="flex items-center justify-between p-5">
+              <div className="flex items-center justify-between p-4">
                 <div className="flex gap-3">
-                  <Volume2 className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+                  <Volume2 className="w-4 h-4 opacity-60 mt-0.5" />
                   <div>
-                    <label className="text-sm font-medium tracking-wide block">Keyboard Sound Profile</label>
-                    <span className="text-xs opacity-50 block">Select the click acoustics when typing keys.</span>
+                    <label className="text-xs font-semibold block">Keyboard Sound Profile</label>
+                    <span className="text-[11px] opacity-50 block">Tactile click acoustics type.</span>
                   </div>
                 </div>
                 <select
                   value={settings.soundProfile || 'clicky'}
                   onChange={(e) => updateSetting('soundProfile', e.target.value)}
-                  className="p-2 text-xs rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] bg-transparent text-[#2E2C29] dark:text-[#ECE8E1] cursor-pointer"
+                  className="p-1.5 text-xs border border-[#E5E5E5] dark:border-[#27272A] bg-transparent font-sans rounded-md cursor-pointer"
                 >
-                  <option value="clicky" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Clicky (Mechanical)</option>
-                  <option value="soft" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Soft (Bubble Pop)</option>
-                  <option value="vintage" className="bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">Vintage (Typewriter)</option>
+                  <option value="clicky" className="bg-[#FFFFFF] dark:bg-[#09090B]">Mechanical Click</option>
+                  <option value="aggressive" className="bg-[#FFFFFF] dark:bg-[#09090B]">Aggressive Clack</option>
+                  <option value="soft" className="bg-[#FFFFFF] dark:bg-[#09090B]">Bubble Pop</option>
+                  <option value="vintage" className="bg-[#FFFFFF] dark:bg-[#09090B]">Typewriter Bell</option>
                 </select>
               </div>
 
               {/* Sound Volume Slider */}
-              <div className="flex items-center justify-between p-5">
+              <div className="flex items-center justify-between p-4">
                 <div className="flex gap-3">
-                  <Volume2 className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+                  <Volume2 className="w-4 h-4 opacity-60 mt-0.5" />
                   <div>
-                    <label className="text-sm font-medium tracking-wide block">Typing Sound Volume</label>
-                    <span className="text-xs opacity-50 block">Adjust the loudness of click audio effects.</span>
+                    <label className="text-xs font-semibold block">Audio Volume</label>
+                    <span className="text-[11px] opacity-50 block">Master gain volume level.</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 w-40">
+                <div className="flex items-center gap-3 w-36 font-mono">
                   <input
                     type="range"
                     min="0.1"
@@ -342,9 +277,9 @@ export default function SettingsPanel({ profile, onUpdateProfile, onSwitchProfil
                     step="0.1"
                     value={settings.soundVolume !== undefined ? settings.soundVolume : 0.5}
                     onChange={(e) => updateSetting('soundVolume', parseFloat(e.target.value))}
-                    className="w-full accent-[var(--accent-app)] cursor-pointer h-1 bg-[#E6E1D8] dark:bg-[#2F2D2A] rounded-lg appearance-none"
+                    className="w-full accent-black dark:accent-white cursor-pointer h-1 bg-[#E5E5E5] dark:bg-[#27272A] appearance-none"
                   />
-                  <span className="text-xs font-mono w-8 text-right font-semibold">
+                  <span className="text-xs font-mono font-bold w-8 text-right">
                     {Math.round((settings.soundVolume !== undefined ? settings.soundVolume : 0.5) * 100)}%
                   </span>
                 </div>
@@ -352,24 +287,87 @@ export default function SettingsPanel({ profile, onUpdateProfile, onSwitchProfil
             </>
           )}
 
-          {/* Font Size */}
-          <div className="flex items-center justify-between p-5">
+          {/* Misclick / Error Sound setting */}
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <Type className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+              <Volume2 className="w-4 h-4 opacity-60 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block">Typing Font Size</label>
-                <span className="text-xs opacity-50 block">Change scale of reading text lines for better accessibility.</span>
+                <label className="text-xs font-semibold block">Misclick Alert Audio</label>
+                <span className="text-[11px] opacity-50 block">Play alert audio feedback when mistyping a character.</span>
               </div>
             </div>
-            <div className="flex gap-1.5">
+            <button
+              onClick={() => updateSetting('errorSound', settings.errorSound === false ? true : false)}
+              className={`px-3 py-1 text-xs font-medium border rounded-md transition-all cursor-pointer ${
+                settings.errorSound !== false
+                  ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]'
+                  : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60'
+              }`}
+            >
+              {settings.errorSound !== false ? "Enabled" : "Disabled"}
+            </button>
+          </div>
+
+          {/* Timer 10s Countdown Sound */}
+          <div className="flex items-center justify-between p-4">
+            <div className="flex gap-3">
+              <Volume2 className="w-4 h-4 opacity-60 mt-0.5" />
+              <div>
+                <label className="text-xs font-semibold block">Timer Countdown Audio</label>
+                <span className="text-[11px] opacity-50 block">Soft ticking audio for the final 10 seconds of time trials.</span>
+              </div>
+            </div>
+            <button
+              onClick={() => updateSetting('timerSound', settings.timerSound === false ? true : false)}
+              className={`px-3 py-1 text-xs font-medium border rounded-md transition-all cursor-pointer ${
+                settings.timerSound !== false
+                  ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]'
+                  : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60'
+              }`}
+            >
+              {settings.timerSound !== false ? "Enabled" : "Disabled"}
+            </button>
+          </div>
+
+          {/* Session Complete Chime ("Big Ting!") */}
+          <div className="flex items-center justify-between p-4">
+            <div className="flex gap-3">
+              <Volume2 className="w-4 h-4 opacity-60 mt-0.5" />
+              <div>
+                <label className="text-xs font-semibold block">Session Complete Chime ("Big Ting!")</label>
+                <span className="text-[11px] opacity-50 block">Celebratory chime sequence upon completing a drill.</span>
+              </div>
+            </div>
+            <button
+              onClick={() => updateSetting('completionSound', settings.completionSound === false ? true : false)}
+              className={`px-3 py-1 text-xs font-medium border rounded-md transition-all cursor-pointer ${
+                settings.completionSound !== false
+                  ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]'
+                  : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60'
+              }`}
+            >
+              {settings.completionSound !== false ? "Enabled" : "Disabled"}
+            </button>
+          </div>
+
+          {/* Font Size */}
+          <div className="flex items-center justify-between p-4">
+            <div className="flex gap-3">
+              <Type className="w-4 h-4 opacity-60 mt-0.5" />
+              <div>
+                <label className="text-xs font-semibold block">Typing Font Size</label>
+                <span className="text-[11px] opacity-50 block">Character font sizing inside active typing stream.</span>
+              </div>
+            </div>
+            <div className="flex gap-1 border border-[#E5E5E5] dark:border-[#27272A] p-0.5 rounded-md">
               {(['small', 'medium', 'large'] as const).map((size) => (
                 <button
                   key={size}
                   onClick={() => updateSetting('fontSize', size)}
-                  className={`px-3 py-1.5 text-xs font-semibold capitalize rounded-lg border transition-all cursor-pointer ${
+                  className={`px-3 py-1 text-xs font-medium capitalize rounded-sm transition-all cursor-pointer ${
                     settings.fontSize === size
-                      ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                      : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
+                      ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                      : 'opacity-60 hover:opacity-100'
                   }`}
                 >
                   {size}
@@ -378,24 +376,45 @@ export default function SettingsPanel({ profile, onUpdateProfile, onSwitchProfil
             </div>
           </div>
 
-          {/* Keyboard Size */}
-          <div className="flex items-center justify-between p-5">
+          {/* Virtual Keyboard Visibility Toggle */}
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <Keyboard className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+              <Keyboard className="w-4 h-4 opacity-60 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block">Keyboard Size</label>
-                <span className="text-xs opacity-50 block">Shrink keyboard dimensions and hide hand indicators for a clean view.</span>
+                <label className="text-xs font-semibold block">Display Virtual Keyboard</label>
+                <span className="text-[11px] opacity-50 block">Show or hide visual keycap overlay during practice.</span>
               </div>
             </div>
-            <div className="flex gap-1.5">
+            <button
+              onClick={() => updateSetting('showKeyboard', settings.showKeyboard === false ? true : false)}
+              className={`px-3 py-1 text-xs font-medium border rounded-md transition-all cursor-pointer ${
+                settings.showKeyboard !== false
+                  ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]'
+                  : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60'
+              }`}
+            >
+              {settings.showKeyboard !== false ? "Show" : "Hide"}
+            </button>
+          </div>
+
+          {/* Keyboard Size */}
+          <div className="flex items-center justify-between p-4">
+            <div className="flex gap-3">
+              <Keyboard className="w-4 h-4 opacity-60 mt-0.5" />
+              <div>
+                <label className="text-xs font-semibold block">Keyboard Dimensions</label>
+                <span className="text-[11px] opacity-50 block">Standard keyboard view or compact view.</span>
+              </div>
+            </div>
+            <div className="flex gap-1 border border-[#E5E5E5] dark:border-[#27272A] p-0.5 rounded-md">
               {(['standard', 'compact'] as const).map((sz) => (
                 <button
                   key={sz}
                   onClick={() => updateSetting('keyboardSize', sz)}
-                  className={`px-3 py-1.5 text-xs font-semibold capitalize rounded-lg border transition-all cursor-pointer ${
+                  className={`px-3 py-1 text-xs font-medium capitalize rounded-sm transition-all cursor-pointer ${
                     (settings.keyboardSize || 'standard') === sz
-                      ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                      : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
+                      ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]'
+                      : 'opacity-60 hover:opacity-100'
                   }`}
                 >
                   {sz}
@@ -405,64 +424,38 @@ export default function SettingsPanel({ profile, onUpdateProfile, onSwitchProfil
           </div>
 
           {/* Keyboard Color-Coding */}
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <RefreshCw className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
+              <RefreshCw className="w-4 h-4 opacity-60 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block">Finger Color-Coding</label>
-                <span className="text-xs opacity-50 block">Highlight keys by standard finger mapping for touch-typing.</span>
+                <label className="text-xs font-semibold block">Finger Placement Mapping</label>
+                <span className="text-[11px] opacity-50 block">Color-code key caps to finger responsibilities.</span>
               </div>
             </div>
             <button
               onClick={() => updateSetting('keyboardColorCoded', !settings.keyboardColorCoded)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer border transition-all ${
+              className={`px-3 py-1 text-xs font-medium border rounded-md transition-all cursor-pointer ${
                 settings.keyboardColorCoded
-                  ? 'bg-[var(--accent-app)] text-white border-[var(--accent-app)]'
-                  : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
+                  ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]'
+                  : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60'
               }`}
             >
               {settings.keyboardColorCoded ? "Enabled" : "Disabled"}
             </button>
           </div>
 
-          {/* Typing Area Height */}
-          <div className="flex items-center justify-between p-5">
-            <div className="flex gap-3">
-              <Eye className="w-5 h-5 opacity-70 mt-0.5 text-[var(--accent-app)] dark:text-[var(--accent-app)]" />
-              <div>
-                <label className="text-sm font-medium tracking-wide block">Typing Area Height</label>
-                <span className="text-xs opacity-50 block">Set default height size for the active text container.</span>
-              </div>
-            </div>
-            <div className="flex gap-1.5">
-              {(['compact', 'standard', 'large'] as const).map((h) => (
-                <button
-                  key={h}
-                  onClick={() => updateSetting('containerHeight', h)}
-                  className={`px-3 py-1.5 text-xs font-semibold capitalize rounded-lg border transition-all cursor-pointer ${
-                    (settings.containerHeight || 'standard') === h
-                      ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]'
-                      : 'border-[#E6E1D8] dark:border-[#2F2D2A] opacity-60'
-                  }`}
-                >
-                  {h === 'compact' ? 'Small' : h === 'standard' ? 'Medium' : 'Large'}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Reset Performance Data */}
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between p-4">
             <div className="flex gap-3">
-              <RefreshCw className="w-5 h-5 opacity-70 mt-0.5 text-red-500" />
+              <RefreshCw className="w-4 h-4 text-red-500 opacity-80 mt-0.5" />
               <div>
-                <label className="text-sm font-medium tracking-wide block text-red-500">Reset Performance Data</label>
-                <span className="text-xs opacity-50 block">Wipe all practice sessions, accuracy histories, and badges.</span>
+                <label className="text-xs font-semibold block text-red-500">Clear Performance History</label>
+                <span className="text-[11px] opacity-50 block">Permanently delete session history and badges.</span>
               </div>
             </div>
             <button
               onClick={handleResetData}
-              className="px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer border border-red-500/20 text-red-500 hover:bg-red-500/10 transition-all"
+              className="px-3 py-1 text-xs font-semibold border border-red-500/40 text-red-500 hover:bg-red-500/10 transition-all cursor-pointer rounded-md"
             >
               Reset Data
             </button>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Link, Trash2, Play, Loader2, Info, Upload, Layers, RefreshCw } from 'lucide-react';
+import { FileText, Link, Trash2, Play, Loader2, Info, Upload, Layers } from 'lucide-react';
 import { CustomText } from '../types/electron';
 import { LessonStep } from '../utils/lessonsData';
 import { essaysData, EssayItem } from '../utils/essaysData';
@@ -340,16 +340,22 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
   }, [viewMode]);
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 animate-fade-in text-[#2E2C29] dark:text-[#D1D2D3]">
-      <div className="mb-6">
-        <h1 className="text-2xl font-light tracking-wide mb-1">
+    <div className="max-w-4xl mx-auto py-6 px-4 animate-fade-in text-[#09090B] dark:text-[#FAFAFA] font-mono">
+      <div className="mb-6 border-b border-[#E5E5E5] dark:border-[#27272A] pb-4">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="status-dot"></span>
+          <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">
+            [ ITYPE // PRACTICE_MODULE ]
+          </span>
+        </div>
+        <h1 className="text-2xl font-light tracking-tight uppercase font-mono">
           {viewMode === 'essays' 
             ? 'Predefined Essays' 
             : viewMode === 'generator' 
             ? 'Quick Practice Generator' 
             : 'Custom Text Import'}
         </h1>
-        <p className="text-sm opacity-60">
+        <p className="text-xs opacity-60 font-mono mt-0.5">
           {viewMode === 'essays'
             ? 'Practice touch-typing using structured essays, classic literature, and code syntax snippets.'
             : viewMode === 'generator'
@@ -360,64 +366,69 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
 
       {/* Tabs navigation - displayed only in Custom Text mode to toggle between Import and Saved Decks */}
       {viewMode === 'custom' && (
-        <div className="flex gap-6 border-b border-[#EBE7DF] dark:border-[#3F4245] pb-2 mb-6">
+        <div className="flex gap-4 border-b border-[#E5E5E5] dark:border-[#27272A] pb-2 mb-6 font-mono">
           <button
             onClick={() => setActiveTab('custom')}
-            className={`pb-2 px-1 text-xs font-semibold tracking-wide border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`pb-2 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'custom' 
-                ? 'border-[var(--accent-app)] text-[var(--accent-app)]' 
-                : 'border-transparent opacity-60 hover:opacity-100'
+                ? 'border-[#09090B] text-[#09090B] dark:border-[#FAFAFA] dark:text-[#FAFAFA]' 
+                : 'border-transparent opacity-50 hover:opacity-100'
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
-            Import Custom Text
+            [ IMPORT_CUSTOM_TEXT ]
           </button>
           <button
             onClick={() => setActiveTab('saved')}
-            className={`pb-2 px-1 text-xs font-semibold tracking-wide border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`pb-2 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'saved' 
-                ? 'border-[var(--accent-app)] text-[var(--accent-app)]' 
-                : 'border-transparent opacity-60 hover:opacity-100'
+                ? 'border-[#09090B] text-[#09090B] dark:border-[#FAFAFA] dark:text-[#FAFAFA]' 
+                : 'border-transparent opacity-50 hover:opacity-100'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            Saved Decks ({customTexts.length})
+            [ SAVED_DECKS ({customTexts.length}) ]
           </button>
         </div>
       )}
 
       {/* Error alert banner */}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg p-3.5 text-xs mb-5 flex items-center gap-2">
+        <div className="bg-red-500/10 border border-red-500/30 text-red-500 p-3.5 text-xs mb-5 flex items-center gap-2 font-mono">
           <Info className="w-4 h-4" />
           <span>{error}</span>
         </div>
       )}
 
       {/* ----------------------------------------------------
-          TAB VIEW: PREDEFINED ESSAYS
+          TAB VIEW: PREDEFINED ESSAYS & CODE SNIPPETS
           ---------------------------------------------------- */}
       {activeTab === 'essays' && (
-        <div className="space-y-6">
-          {/* Settings block for length sizing */}
-          <div className="bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-6 font-sans">
+          {/* Header controls & Chunk Size selector */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E5E5] dark:border-[#27272A] pb-4">
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--accent-app)]">Practice Length Sizing</h4>
-              <p className="text-[11px] opacity-60 mt-0.5">Truncate the essays to fit your targeted typing sprint limit.</p>
+              <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block mb-1">
+                Library
+              </span>
+              <p className="text-xs opacity-60 font-sans">Select a literature passage or code snippet for focused practice.</p>
             </div>
-            <div className="flex gap-1 bg-[#FAF9F6] dark:bg-[#323437] p-0.5 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245]">
-              {([
-                { label: '50 words', val: 50 },
-                { label: '100 words', val: 100 },
-                { label: 'Full text', val: 0 }
-              ]).map((opt) => (
+
+            <div className="flex items-center gap-2 border border-[#E5E5E5] dark:border-[#27272A] p-0.5 rounded-md font-sans">
+              <span className="text-xs opacity-50 px-2 font-medium">Session Length:</span>
+              {[
+                { label: '50 Words', val: 50 },
+                { label: '100 Words', val: 100 },
+                { label: '200 Words', val: 200 },
+                { label: 'Full Text', val: 0 }
+              ].map((opt) => (
                 <button
                   key={opt.val}
                   onClick={() => setChunkSize(opt.val)}
-                  className={`px-3 py-1.5 text-[10px] font-semibold rounded capitalize transition-all cursor-pointer ${
+                  className={`px-3 py-1 text-xs font-medium rounded-sm transition-all cursor-pointer ${
                     chunkSize === opt.val 
-                      ? 'bg-[var(--accent-app)] text-white shadow-sm' 
-                      : 'hover:bg-opacity-50'
+                      ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]' 
+                      : 'opacity-60 hover:opacity-100'
                   }`}
                 >
                   {opt.label}
@@ -427,41 +438,35 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
           </div>
 
           {/* Grid listing */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-sans">
             {essaysData.map((essay) => (
               <div 
                 key={essay.id}
-                className="bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-6 flex flex-col justify-between hover:shadow-sm transition-all min-h-[190px]"
+                className="border border-[#E5E5E5] dark:border-[#27272A] p-5 flex flex-col justify-between hover:border-[#09090B] dark:hover:border-[#FAFAFA] transition-all min-h-[180px] bg-transparent rounded-xl"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--accent-app)] bg-[var(--accent-app)]/10 px-1.5 py-0.5 rounded">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider border border-[#E5E5E5] dark:border-[#27272A] px-2 py-0.5 rounded-md bg-[#FAFAFA] dark:bg-[#18181B]">
                       {essay.category}
                     </span>
-                    <span className={`text-[9px] font-semibold capitalize px-1.5 py-0.5 rounded ${
-                      essay.difficulty === 'easy' 
-                        ? 'bg-emerald-500/10 text-emerald-500' 
-                        : essay.difficulty === 'medium'
-                        ? 'bg-amber-500/10 text-amber-500'
-                        : 'bg-red-500/10 text-red-500'
-                    }`}>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider border border-[#E5E5E5] dark:border-[#27272A] px-2 py-0.5 rounded-md opacity-60">
                       {essay.difficulty}
                     </span>
                   </div>
-                  <h3 className="text-sm font-semibold tracking-wide">{essay.title}</h3>
-                  <p className="text-xs opacity-60 leading-relaxed">{essay.description}</p>
+                  <h3 className="text-sm font-semibold">{essay.title}</h3>
+                  <p className="text-xs opacity-60 leading-relaxed font-sans">{essay.description}</p>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-[#EBE7DF] dark:border-[#3F4245] pt-4 mt-5">
-                  <span className="text-[10px] opacity-40 font-semibold uppercase tracking-wider">
-                    {essay.text.split(/\s+/).length} Words total
+                <div className="flex items-center justify-between border-t border-[#E5E5E5] dark:border-[#27272A] pt-3 mt-4 font-sans">
+                  <span className="text-xs opacity-50 font-mono">
+                    {essay.text.split(/\s+/).length} Words
                   </span>
                   <button
                     onClick={() => handleStartEssay(essay)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--accent-app)] text-white font-semibold text-xs hover:opacity-90 transition-all cursor-pointer shadow-sm"
+                    className="flex items-center gap-1.5 px-4 py-1.5 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-semibold text-xs rounded-md hover:opacity-90 transition-all cursor-pointer"
                   >
-                    <Play className="w-3.5 h-3.5 fill-current" />
-                    Start Essay
+                    <Play className="w-3 h-3 fill-current" />
+                    Start Practice
                   </button>
                 </div>
               </div>
@@ -474,12 +479,12 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
           TAB VIEW: IMPORT CUSTOM TEXT
           ---------------------------------------------------- */}
       {activeTab === 'custom' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 font-sans">
           {/* Left: Input Creator forms */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-6 shadow-sm">
-              <h2 className="text-sm font-semibold tracking-wide border-b border-[#EBE7DF] dark:border-[#3F4245] pb-2.5 mb-4">
-                Import and Parse Custom Text
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-6 bg-transparent rounded-xl">
+              <h2 className="text-xs font-semibold uppercase tracking-wider border-b border-[#E5E5E5] dark:border-[#27272A] pb-2.5 mb-4 text-neutral-500">
+                Import Custom Text
               </h2>
 
               {/* Scrape / Upload */}
@@ -487,27 +492,27 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
                 <button
                   type="button"
                   onClick={handleFileUpload}
-                  className="flex items-center justify-center gap-2 p-3 text-xs font-semibold rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] bg-transparent hover:bg-[#FAF9F6] dark:hover:bg-[#323437] transition-all cursor-pointer"
+                  className="flex items-center justify-center gap-2 p-3 text-xs font-semibold rounded-md border border-[#E5E5E5] dark:border-[#27272A] bg-transparent hover:bg-[#09090B] hover:text-[#FFFFFF] dark:hover:bg-[#FAFAFA] dark:hover:text-[#09090B] transition-all cursor-pointer"
                 >
-                  <FileText className="w-4 h-4 text-[var(--accent-app)]" />
-                  Upload Text File (.txt)
+                  <FileText className="w-4 h-4 opacity-80" />
+                  Upload .txt File
                 </button>
 
                 <form onSubmit={handleUrlScrape} className="relative flex gap-2">
                   <input
                     type="url"
-                    placeholder="Paste URL..."
+                    placeholder="Paste website URL..."
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    className="w-full pl-8 pr-16 py-2.5 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] bg-transparent text-xs text-ellipsis focus:outline-none"
+                    className="w-full pl-8 pr-16 py-2.5 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent text-xs text-ellipsis font-sans rounded-md"
                   />
-                  <Link className="absolute left-2.5 top-3 w-3.5 h-3.5 opacity-55 text-[var(--accent-app)]" />
+                  <Link className="absolute left-2.5 top-3 w-4 h-4 opacity-55" />
                   <button
                     type="submit"
                     disabled={!url.trim() || isScraping}
-                    className="absolute right-1.5 top-1.5 px-2.5 py-1 rounded bg-[var(--accent-app)] text-white text-[10px] font-semibold hover:opacity-95 transition-all cursor-pointer disabled:opacity-50"
+                    className="absolute right-1.5 top-1.5 px-3 py-1 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] text-xs font-semibold rounded-md hover:opacity-90 transition-all cursor-pointer disabled:opacity-30"
                   >
-                    {isScraping ? <Loader2 className="w-3 h-3 animate-spin" /> : "Scrape"}
+                    {isScraping ? <Loader2 className="w-3 h-3 animate-spin" /> : "Fetch"}
                   </button>
                 </form>
               </div>
@@ -515,95 +520,97 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
               {/* Input forms */}
               <form onSubmit={handleStartPractice} className="space-y-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-60">Focus Keys Drill (Optional)</label>
+                  <label className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Target Focus Keys (Optional)</label>
                   <input
                     type="text"
-                    placeholder="e.g. f, j, k (Generates drill focused strictly on these letters)"
+                    placeholder="e.g. f, j, k, l"
                     value={focusKeys}
                     onChange={(e) => setFocusKeys(e.target.value)}
-                    className="w-full p-3 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] bg-transparent text-xs focus:outline-none focus:border-[var(--accent-app)] mb-1"
+                    className="w-full p-2.5 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent text-xs font-mono rounded-md"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-60">Title (Optional)</label>
+                  <label className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Practice Title</label>
                   <input
                     type="text"
-                    placeholder="e.g. JavaScript Fetch Code, Song Lyrics..."
+                    placeholder="Title for this practice text..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    maxLength={40}
-                    className="w-full p-3 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] bg-transparent text-xs focus:outline-none focus:border-[var(--accent-app)]"
+                    className="w-full p-2.5 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent text-xs font-sans rounded-md"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-60">Practice Text</label>
+                  <label className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Text Content</label>
                   <textarea
-                    placeholder="Paste your text or code snippet here..."
+                    rows={6}
+                    placeholder="Paste custom text here..."
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    rows={6}
-                    className="w-full p-4 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] bg-transparent text-xs font-sans focus:outline-none focus:border-[var(--accent-app)]"
+                    className="w-full p-3 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent text-xs font-mono leading-relaxed rounded-md"
                   />
                 </div>
 
-                <div className="flex justify-end pt-3">
+                {error && <p className="text-xs text-red-500 font-sans">{error}</p>}
+
+                <div className="flex gap-3 pt-2">
                   <button
                     type="submit"
-                    disabled={isSaving || !content.trim()}
-                    className="flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg bg-[var(--accent-app)] text-white font-semibold text-xs hover:opacity-95 transition-all cursor-pointer shadow-sm disabled:opacity-55"
+                    disabled={(!content.trim() && !focusKeys.trim()) || isSaving}
+                    className="flex-1 flex items-center justify-center gap-2 p-3 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-semibold text-xs rounded-md hover:opacity-90 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                   >
-                    {isSaving ? (
-                      <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        Saving to Deck...
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-3.5 h-3.5 fill-current" />
-                        Start Custom Practice
-                      </>
-                    )}
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    Start Practice Session
                   </button>
                 </div>
               </form>
             </div>
           </div>
 
-          {/* Right: Settings panel card */}
+          {/* Right: Options sidebar */}
           <div className="space-y-6">
-            <div className="bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-6 shadow-sm space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--accent-app)] border-b border-[#EBE7DF] dark:border-[#3F4245] pb-2">
-                Import Settings
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-6 space-y-4 bg-transparent rounded-xl">
+              <h3 className="text-xs font-semibold uppercase tracking-wider border-b border-[#E5E5E5] dark:border-[#27272A] pb-2 text-neutral-500">
+                Session Settings
               </h3>
 
-              {/* Length */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider opacity-60">Session Length</span>
-                <select
-                  value={chunkSize}
-                  onChange={(e) => setChunkSize(Number(e.target.value))}
-                  className="w-full p-2 text-xs rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] bg-transparent text-[#2E2C29] dark:text-[#D1D2D3]"
-                >
-                  <option value={50} className="bg-[#FAF9F6] dark:bg-[#323437]">Short (50 words)</option>
-                  <option value={100} className="bg-[#FAF9F6] dark:bg-[#323437]">Standard (100 words)</option>
-                  <option value={200} className="bg-[#FAF9F6] dark:bg-[#323437]">Long (200 words)</option>
-                  <option value={0} className="bg-[#FAF9F6] dark:bg-[#323437]">Full Text (infinite)</option>
-                </select>
+              {/* Chunk Size */}
+              <div className="space-y-2">
+                <label className="text-xs font-semibold block">Chunk Size</label>
+                <div className="grid grid-cols-2 gap-1.5 border border-[#E5E5E5] dark:border-[#27272A] p-1 rounded-md">
+                  {[
+                    { label: '50 W', val: 50 },
+                    { label: '100 W', val: 100 },
+                    { label: '200 W', val: 200 },
+                    { label: 'Full', val: 0 }
+                  ].map((opt) => (
+                    <button
+                      key={opt.val}
+                      onClick={() => setChunkSize(opt.val)}
+                      className={`py-1.5 text-xs font-medium rounded-sm transition-all cursor-pointer ${
+                        chunkSize === opt.val 
+                          ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]' 
+                          : 'opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Formatting checkbox */}
+              {/* Strip Formatting check */}
               <label className="flex items-start gap-2.5 p-1 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={stripFormatting}
                   onChange={(e) => setStripFormatting(e.target.checked)}
-                  className="mt-0.5 accent-[var(--accent-app)]"
+                  className="mt-0.5 accent-black dark:accent-white"
                 />
                 <div>
-                  <span className="text-xs font-semibold block leading-none">Strip Complex Formatting</span>
-                  <span className="text-[10px] opacity-50 block mt-0.5">Normalize smart quotes, clean odd symbols, and format whitespace.</span>
+                  <span className="text-xs font-semibold block leading-none">Clean Formatting</span>
+                  <span className="text-[11px] opacity-50 block mt-1">Normalize smart quotes and whitespace.</span>
                 </div>
               </label>
 
@@ -613,11 +620,11 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
                   type="checkbox"
                   checked={saveToDeck}
                   onChange={(e) => setSaveToDeck(e.target.checked)}
-                  className="mt-0.5 accent-[var(--accent-app)]"
+                  className="mt-0.5 accent-black dark:accent-white"
                 />
                 <div>
                   <span className="text-xs font-semibold block leading-none">Save to Saved Decks</span>
-                  <span className="text-[10px] opacity-50 block mt-0.5">Keep this text inside your local SQL database for future repeats.</span>
+                  <span className="text-[11px] opacity-50 block mt-1">Save text to your local library.</span>
                 </div>
               </label>
             </div>
@@ -629,18 +636,18 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
           TAB VIEW: SAVED CUSTOM DECKS
           ---------------------------------------------------- */}
       {activeTab === 'saved' && (
-        <div className="space-y-4">
+        <div className="space-y-4 font-sans">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12 opacity-50">
-              <Loader2 className="w-8 h-8 animate-spin text-[var(--accent-app)]" />
-              <p className="text-xs mt-2">Loading saved decks...</p>
+              <Loader2 className="w-6 h-6 animate-spin" />
+              <p className="text-xs mt-2 font-sans text-neutral-500">Loading Decks...</p>
             </div>
           ) : customTexts.length === 0 ? (
-            <div className="bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-12 text-center shadow-sm">
-              <FileText className="w-10 h-10 opacity-30 mx-auto mb-2 text-[var(--accent-app)]" />
-              <h3 className="text-sm font-semibold tracking-wide">No Saved Decks Yet</h3>
-              <p className="text-xs opacity-50 max-w-sm mx-auto mt-1">
-                You haven't saved any custom texts yet. Use the **Import Custom Text** tab to upload file snippets and build your deck list.
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-12 text-center bg-transparent rounded-xl">
+              <FileText className="w-8 h-8 opacity-30 mx-auto mb-2" />
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500">No Saved Decks</h3>
+              <p className="text-xs opacity-50 max-w-sm mx-auto mt-1 font-sans leading-relaxed">
+                Use the Custom Import tab to save text snippets for repeat practice.
               </p>
             </div>
           ) : (
@@ -648,32 +655,32 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
               {customTexts.map((deck) => (
                 <div 
                   key={deck.id}
-                  className="bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-5 flex flex-col justify-between hover:shadow-sm transition-all min-h-[150px]"
+                  className="border border-[#E5E5E5] dark:border-[#27272A] p-5 flex flex-col justify-between hover:border-[#09090B] dark:hover:border-[#FAFAFA] transition-all min-h-[140px] bg-transparent rounded-xl"
                 >
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-start gap-3">
-                      <h3 className="text-sm font-semibold tracking-wide truncate max-w-[85%]">{deck.title}</h3>
+                      <h3 className="text-xs font-semibold truncate max-w-[85%]">{deck.title}</h3>
                       <button
                         onClick={() => handleDeleteDeck(deck.id)}
-                        className="p-1 rounded text-red-500 hover:bg-red-500/10 transition-all cursor-pointer"
+                        className="p-1 border border-transparent hover:border-red-500/30 text-red-500 hover:bg-red-500/10 transition-all cursor-pointer rounded-md"
                         title="Delete Deck"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <p className="text-xs opacity-50 font-mono truncate">{deck.content}</p>
+                    <p className="text-xs opacity-50 font-sans truncate">{deck.content}</p>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-[#EBE7DF] dark:border-[#3F4245] pt-4 mt-4">
-                    <span className="text-[10px] opacity-40 font-semibold">
-                      {deck.content.split(/\s+/).length} Words total
+                  <div className="flex items-center justify-between border-t border-[#E5E5E5] dark:border-[#27272A] pt-3 mt-4">
+                    <span className="text-xs opacity-50 font-mono">
+                      {deck.content.split(/\s+/).length} Words
                     </span>
                     <button
                       onClick={() => handleStartSavedDeck(deck)}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245] text-xs font-semibold hover:bg-[var(--accent-app)]/10 hover:text-[var(--accent-app)] transition-all cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E5E5E5] dark:border-[#27272A] text-xs font-semibold rounded-md hover:bg-[#09090B] hover:text-[#FFFFFF] dark:hover:bg-[#FAFAFA] dark:hover:text-[#09090B] transition-all cursor-pointer"
                     >
                       <Play className="w-3 h-3 fill-current" />
-                      Practice Deck
+                      Practice
                     </button>
                   </div>
                 </div>
@@ -684,36 +691,36 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
       )}
 
       {/* ----------------------------------------------------
-          TAB VIEW: MONKEYTYPE RANDOM WORDS
+          TAB VIEW: QUICK PRACTICE GENERATOR
           ---------------------------------------------------- */}
       {activeTab === 'random' && (
-        <div className="max-w-2xl mx-auto bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-8 shadow-sm space-y-6">
+        <div className="max-w-2xl mx-auto border border-[#E5E5E5] dark:border-[#27272A] p-8 space-y-6 font-sans bg-transparent rounded-xl">
           <div className="text-center space-y-1">
-            <h2 className="text-base font-semibold tracking-wide flex items-center justify-center gap-2">
-              <RefreshCw className="w-4 h-4 text-[var(--accent-app)]" />
+            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block">Word Generator</span>
+            <h2 className="text-base font-semibold">
               Quick Practice Generator
             </h2>
-            <p className="text-xs opacity-60">Create endless randomized word flows to test your speed and pacing consistency.</p>
+            <p className="text-xs opacity-60 font-sans">Generate endless randomized word flows to test speed & pacing consistency.</p>
           </div>
 
           {/* Type selector */}
-          <div className="grid grid-cols-2 gap-3 bg-[#FAF9F6] dark:bg-[#323437] p-1 rounded-lg border border-[#EBE7DF] dark:border-[#3F4245]">
+          <div className="grid grid-cols-2 gap-2 border border-[#E5E5E5] dark:border-[#27272A] p-1 rounded-md">
             <button
               onClick={() => setRandomType('words')}
-              className={`py-2 text-xs font-semibold rounded transition-all cursor-pointer ${
+              className={`py-2 text-xs font-semibold transition-all cursor-pointer rounded-sm ${
                 randomType === 'words' 
-                  ? 'bg-[var(--accent-app)] text-white shadow-sm' 
-                  : 'opacity-65 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]' 
+                  : 'opacity-60 hover:opacity-100'
               }`}
             >
               Words Limit Mode
             </button>
             <button
               onClick={() => setRandomType('time')}
-              className={`py-2 text-xs font-semibold rounded transition-all cursor-pointer ${
+              className={`py-2 text-xs font-semibold transition-all cursor-pointer rounded-sm ${
                 randomType === 'time' 
-                  ? 'bg-[var(--accent-app)] text-white shadow-sm' 
-                  : 'opacity-65 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B]' 
+                  : 'opacity-60 hover:opacity-100'
               }`}
             >
               Time Trial Mode
@@ -723,16 +730,16 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
           {/* Modes parameters */}
           {randomType === 'words' ? (
             <div className="space-y-2 text-left">
-              <label className="text-[10px] font-bold uppercase tracking-wider opacity-60">Word Count Sizing</label>
+              <label className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block">Word Count</label>
               <div className="flex gap-1.5">
                 {([10, 25, 50, 100]).map((cnt) => (
                   <button
                     key={cnt}
                     onClick={() => setRandomWordCount(cnt)}
-                    className={`flex-1 py-2 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+                    className={`flex-1 py-2 text-xs font-semibold border rounded-md transition-all cursor-pointer ${
                       randomWordCount === cnt 
-                        ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]' 
-                        : 'border-[#EBE7DF] dark:border-[#3F4245] opacity-60 hover:opacity-100'
+                        ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]' 
+                        : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60 hover:opacity-100'
                     }`}
                   >
                     {cnt} Words
@@ -742,16 +749,16 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
             </div>
           ) : (
             <div className="space-y-2 text-left">
-              <label className="text-[10px] font-bold uppercase tracking-wider opacity-60">Stopwatch Time Limit</label>
+              <label className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block">Time Limit</label>
               <div className="flex gap-1.5">
                 {([15, 30, 60]).map((sec) => (
                   <button
                     key={sec}
                     onClick={() => setRandomTimeLimit(sec)}
-                    className={`flex-1 py-2 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+                    className={`flex-1 py-2 text-xs font-semibold border rounded-md transition-all cursor-pointer ${
                       randomTimeLimit === sec 
-                        ? 'bg-[var(--accent-app)]/15 text-[var(--accent-app)] border-[var(--accent-app)]' 
-                        : 'border-[#EBE7DF] dark:border-[#3F4245] opacity-60 hover:opacity-100'
+                        ? 'border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]' 
+                        : 'border-[#E5E5E5] dark:border-[#27272A] opacity-60 hover:opacity-100'
                     }`}
                   >
                     {sec} Seconds
@@ -762,17 +769,17 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
           )}
 
           {/* Difficulty Toggles */}
-          <div className="grid grid-cols-2 gap-4 border-t border-[#EBE7DF] dark:border-[#3F4245] pt-5 text-left">
+          <div className="grid grid-cols-2 gap-4 border-t border-[#E5E5E5] dark:border-[#27272A] pt-5 text-left font-sans">
             <label className="flex items-start gap-2.5 p-1 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={addPunctuation}
                 onChange={(e) => setAddPunctuation(e.target.checked)}
-                className="mt-0.5 accent-[var(--accent-app)] animate-pulse"
+                className="mt-0.5 accent-black dark:accent-white"
               />
               <div>
                 <span className="text-xs font-semibold block">Add Punctuation</span>
-                <span className="text-[10px] opacity-50 block mt-0.5">Inject commas, periods, and uppercase sentence letters.</span>
+                <span className="text-[11px] opacity-50 block mt-0.5">Inject commas, periods, capital letters.</span>
               </div>
             </label>
 
@@ -781,22 +788,22 @@ export default function CustomTextPanel({ profileId, viewMode = 'custom', onSele
                 type="checkbox"
                 checked={addNumbers}
                 onChange={(e) => setAddNumbers(e.target.checked)}
-                className="mt-0.5 accent-[var(--accent-app)] animate-pulse"
+                className="mt-0.5 accent-black dark:accent-white"
               />
               <div>
                 <span className="text-xs font-semibold block">Add Numbers</span>
-                <span className="text-[10px] opacity-50 block mt-0.5">Inject random digits to test number-row placement typing.</span>
+                <span className="text-[11px] opacity-50 block mt-0.5">Inject digit clusters to test number row.</span>
               </div>
             </label>
           </div>
 
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center pt-4 font-sans">
             <button
               onClick={handleStartRandomGenerator}
-              className="flex items-center justify-center gap-1.5 px-8 py-3 rounded-lg bg-[var(--accent-app)] text-white font-bold text-xs hover:opacity-95 transition-all cursor-pointer shadow-sm"
+              className="flex items-center justify-center gap-1.5 px-8 py-3 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-semibold text-xs rounded-md hover:opacity-90 transition-all cursor-pointer"
             >
-              <Play className="w-4 h-4 fill-current" />
-              Generate & Start Session
+              <Play className="w-3.5 h-3.5 fill-current" />
+              Generate & Start Practice
             </button>
           </div>
         </div>

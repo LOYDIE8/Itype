@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, User, Loader2 } from 'lucide-react';
+import { UserPlus, Loader2 } from 'lucide-react';
 import { Profile } from '../types/electron';
 
 interface ProfileSelectorProps {
@@ -48,76 +48,100 @@ export default function ProfileSelector({ onSelectProfile }: ProfileSelectorProp
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark">
-        <Loader2 className="w-8 h-8 animate-spin text-accent-light dark:text-accent-dark mb-4" />
-        <p className="text-sm font-medium tracking-wide opacity-75">Loading profiles...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] font-sans">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="status-dot"></span>
+          <span className="text-xs font-medium text-neutral-500">Initializing Database...</span>
+        </div>
+        <Loader2 className="w-5 h-5 animate-spin opacity-80" />
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-6 bg-[#FAF7F2] dark:bg-[#181715] text-[#2E2C29] dark:text-[#ECE8E1]">
-      <div className="w-full max-w-md bg-[#FFFDFB] dark:bg-[#201E1C] rounded-xl shadow-sm border border-[#E6E1D8] dark:border-[#2F2D2A] p-8 text-center transition-all">
-        <div className="mb-8">
-          <h1 className="text-3xl font-light tracking-wide mb-2 text-[#2E2C29] dark:text-[#ECE8E1]">
-            Type<span className="font-semibold text-[var(--accent-app)] dark:text-[var(--accent-app)]">Flow</span>
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] select-none font-sans">
+      <div className="w-full max-w-md bg-[#FFFFFF] dark:bg-[#121215] border border-[#E5E5E5] dark:border-[#27272A] p-8 text-left relative shadow-sm rounded-xl">
+        
+        {/* Top Header Bar */}
+        <div className="flex items-center justify-between border-b border-[#E5E5E5] dark:border-[#27272A] pb-4 mb-6">
+          <div className="flex items-center gap-2">
+            <span className="status-dot"></span>
+            <span className="text-xs font-semibold text-neutral-500 font-sans">v2.4 System Ready</span>
+          </div>
+          <span className="text-xs font-sans opacity-50 font-medium">User Profiles</span>
+        </div>
+
+        {/* App Title Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-light tracking-tight mb-1 font-mono">
+            I<span className="font-bold underline decoration-1 underline-offset-4">TYPE</span>
           </h1>
-          <p className="text-sm text-[#2E2C29]/60 dark:text-[#ECE8E1]/60">
-            A quiet space to master touch typing.
+          <p className="text-xs text-neutral-500 font-sans tracking-wide">
+            Touch Typing Practice & Learning Engine
           </p>
         </div>
 
         {profiles.length > 0 ? (
           <div className="space-y-6">
-            <h2 className="text-lg font-medium tracking-wide text-left opacity-80 mb-2">Select Profile</h2>
-            <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider font-sans">
+                Select Profile
+              </span>
+              <span className="text-xs opacity-50 font-sans">
+                {profiles.length} profile{profiles.length > 1 ? 's' : ''} saved
+              </span>
+            </div>
+
+            <div className="max-h-60 overflow-y-auto space-y-2 pr-1 font-sans">
               {profiles.map((profile) => (
                 <button
                   key={profile.id}
                   onClick={() => onSelectProfile(profile)}
-                  className="flex items-center justify-between w-full p-4 rounded-lg bg-[#FAF7F2] dark:bg-[#181715] hover:bg-[#FAF7F2]/50 dark:hover:bg-[#181715]/50 border border-[#E6E1D8] dark:border-[#2F2D2A] transition-all cursor-pointer group"
+                  className="flex items-center justify-between w-full p-3.5 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent hover:bg-[#09090B] hover:text-[#FFFFFF] dark:hover:bg-[#FAFAFA] dark:hover:text-[#09090B] transition-all cursor-pointer group rounded-lg"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#E6E1D8] dark:bg-[#2F2D2A] flex items-center justify-center text-[#2E2C29] dark:text-[#ECE8E1]">
-                      <User className="w-4 h-4" />
+                    <div className="w-8 h-8 border border-[#E5E5E5] dark:border-[#27272A] flex items-center justify-center text-xs font-bold rounded-md group-hover:border-transparent bg-[#FAFAFA] dark:bg-[#18181B]">
+                      {profile.name.substring(0, 2).toUpperCase()}
                     </div>
-                    <span className="font-medium text-sm group-hover:text-[var(--accent-app)] dark:group-hover:text-[var(--accent-app)] transition-colors">
+                    <span className="font-semibold text-xs tracking-wide">
                       {profile.name}
                     </span>
                   </div>
-                  <span className="text-xs opacity-40">Select</span>
+                  <span className="text-xs font-medium opacity-50 group-hover:opacity-100">
+                    Continue →
+                  </span>
                 </button>
               ))}
             </div>
 
-            <div className="border-t border-[#E6E1D8] dark:border-[#2F2D2A] pt-6">
-              <form onSubmit={handleCreate} className="space-y-3">
+            <div className="border-t border-[#E5E5E5] dark:border-[#27272A] pt-6 font-sans">
+              <form onSubmit={handleCreate} className="space-y-4">
                 <div className="flex flex-col gap-1.5 text-left">
-                  <label htmlFor="new-name" className="text-xs font-semibold uppercase tracking-wider opacity-60">
+                  <label htmlFor="new-name" className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
                     Create New Profile
                   </label>
                   <input
                     id="new-name"
                     type="text"
-                    placeholder="Enter name..."
+                    placeholder="Enter profile name..."
                     value={newProfileName}
                     onChange={(e) => setNewProfileName(e.target.value)}
                     maxLength={15}
-                    className="w-full p-3 rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] bg-transparent text-sm transition-all focus:border-[var(--accent-app)] dark:focus:border-[var(--accent-app)]"
+                    className="w-full p-3 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent text-xs font-sans tracking-wide transition-all focus:border-[#09090B] dark:focus:border-[#FAFAFA] rounded-md"
                   />
                 </div>
-                {error && <p className="text-xs text-red-500 text-left mt-1 font-medium">{error}</p>}
+                {error && <p className="text-xs text-red-500 font-sans text-left tracking-wide">{error}</p>}
                 <button
                   type="submit"
                   disabled={!newProfileName.trim() || isCreating}
-                  className="flex items-center justify-center gap-2 w-full p-3 rounded-lg bg-[var(--accent-app)] dark:bg-[var(--accent-app)] text-white hover:bg-[var(--accent-app)]/90 dark:hover:bg-[var(--accent-app)]/90 text-sm font-semibold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex items-center justify-center gap-2 w-full p-3 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 text-xs font-semibold font-sans tracking-wide transition-all cursor-pointer rounded-md disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   {isCreating ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
                     <>
                       <UserPlus className="w-4 h-4" />
-                      Create and Start
+                      Create Profile
                     </>
                   )}
                 </button>
@@ -125,11 +149,13 @@ export default function ProfileSelector({ onSelectProfile }: ProfileSelectorProp
             </div>
           </div>
         ) : (
-          <div>
-            <h2 className="text-lg font-medium tracking-wide mb-4 opacity-80">Welcome! Create your profile</h2>
+          <div className="font-sans">
+            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block mb-4 text-left">
+              Create Your Profile
+            </span>
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="flex flex-col gap-1.5 text-left">
-                <label htmlFor="first-name" className="text-xs font-semibold uppercase tracking-wider opacity-60">
+                <label htmlFor="first-name" className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
                   Profile Name
                 </label>
                 <input
@@ -139,28 +165,35 @@ export default function ProfileSelector({ onSelectProfile }: ProfileSelectorProp
                   value={newProfileName}
                   onChange={(e) => setNewProfileName(e.target.value)}
                   maxLength={15}
-                  className="w-full p-3 rounded-lg border border-[#E6E1D8] dark:border-[#2F2D2A] bg-transparent text-sm transition-all focus:border-[var(--accent-app)] dark:focus:border-[var(--accent-app)]"
+                  className="w-full p-3 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent text-xs font-sans tracking-wide transition-all focus:border-[#09090B] dark:focus:border-[#FAFAFA] rounded-md"
                 />
               </div>
-              {error && <p className="text-xs text-red-500 text-left mt-1 font-medium">{error}</p>}
+              {error && <p className="text-xs text-red-500 font-sans text-left tracking-wide">{error}</p>}
               <button
                 type="submit"
                 disabled={!newProfileName.trim() || isCreating}
-                className="flex items-center justify-center gap-2 w-full p-3.5 rounded-lg bg-[var(--accent-app)] dark:bg-[var(--accent-app)] text-white hover:bg-[var(--accent-app)]/90 dark:hover:bg-[var(--accent-app)]/90 text-sm font-semibold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 w-full p-3.5 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 text-xs font-semibold font-sans tracking-wide transition-all cursor-pointer rounded-md disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 {isCreating ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <>
                     <UserPlus className="w-4 h-4" />
-                    Get Started
+                    Create Profile & Start
                   </>
                 )}
               </button>
             </form>
           </div>
         )}
+
+        {/* Footer System Tag */}
+        <div className="mt-8 pt-4 border-t border-[#E5E5E5] dark:border-[#27272A] flex justify-between text-xs font-sans opacity-50">
+          <span>Storage: Local SQLite</span>
+          <span>Status: Active</span>
+        </div>
       </div>
     </div>
   );
 }
+

@@ -52,6 +52,11 @@ export default function App() {
       const activeFont = activeProfile.settings.appFontType || 'sans';
       root.classList.add(`font-app-${activeFont}`);
 
+      // Sync dark mode background shade class on load
+      root.classList.remove('dark-shade-pitch', 'dark-shade-obsidian', 'dark-shade-charcoal', 'dark-shade-slate', 'dark-shade-dusk');
+      const activeShade = activeProfile.settings.darkShade || 'obsidian';
+      root.classList.add(`dark-shade-${activeShade}`);
+
       loadSessions(activeProfile.id);
     }
   }, [activeProfile]);
@@ -159,10 +164,10 @@ export default function App() {
     return <ProfileSelector onSelectProfile={handleSelectProfile} />;
   }
 
-  // Active Typing Mode Screen (Distraction-Free Monkeytype Sizing)
+  // Active Typing Mode Screen (Distraction-Free Monochrome Typing)
   if (activeStep && activeSessionType) {
     return (
-      <div className="min-h-screen bg-[#FAF9F6] dark:bg-[#323437] flex flex-col justify-between py-6">
+      <div className="min-h-screen bg-[#FFFFFF] dark:bg-[#09090B] flex flex-col justify-between py-6">
         <TypingEngine
           profile={activeProfile}
           targetText={activeStep.text}
@@ -185,121 +190,125 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen bg-[#FAF9F6] dark:bg-[#323437] text-[#2E2C29] dark:text-[#D1D2D3] transition-all">
+    <div className="flex h-screen bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] font-sans transition-all">
       
       {/* Sidebar Navigation */}
-      <aside className="w-64 bg-[#FFFFFF] dark:bg-[#2C2E30] border-r border-[#EBE7DF] dark:border-[#3F4245] flex flex-col justify-between p-6 select-none shrink-0 shadow-sm">
-        <div className="space-y-8">
-          {/* Logo */}
-          <div className="flex items-center gap-2 px-2">
-            <h1 className="text-xl font-light tracking-wide">
-              I<span className="font-semibold text-[var(--accent-app)]">type</span>
-            </h1>
+      <aside className="w-64 bg-[#FFFFFF] dark:bg-[#09090B] border-r border-[#E5E5E5] dark:border-[#27272A] flex flex-col justify-between p-5 select-none shrink-0 font-mono">
+        <div className="space-y-6">
+          {/* Logo & System Badge */}
+          <div className="px-2 space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="status-dot"></span>
+              <h1 className="text-xl font-light tracking-tight font-mono">
+                I<span className="font-bold underline decoration-1 underline-offset-4">TYPE</span>
+              </h1>
+            </div>
+            <p className="text-[10px] tracking-wider opacity-50 font-sans">v2.4 Active</p>
           </div>
 
           {/* Nav List */}
-          <nav className="space-y-1">
+          <nav className="space-y-1 font-sans">
             <button
               onClick={() => setActiveView('tutorial')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'tutorial'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <HelpCircle className="w-4 h-4" />
-              How to Type Guide
+              <HelpCircle className="w-4 h-4 opacity-75" />
+              Guide & Manual
             </button>
             <button
               onClick={() => setActiveView('lessons')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'lessons'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <BookOpen className="w-4 h-4" />
-              Learning Journey
+              <BookOpen className="w-4 h-4 opacity-75" />
+              LESSONS
             </button>
             <button
               onClick={() => setActiveView('essays')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'essays'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <BookOpen className="w-4 h-4" />
-              Predefined Essays
+              <BookOpen className="w-4 h-4 opacity-75" />
+              Essays Library
             </button>
             <button
               onClick={() => setActiveView('generator')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'generator'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4 opacity-75" />
               Quick Practice
             </button>
             <button
               onClick={() => setActiveView('custom')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'custom'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <Upload className="w-4 h-4" />
-              Custom Text Import
+              <Upload className="w-4 h-4 opacity-75" />
+              Custom Import
             </button>
             <button
               onClick={() => setActiveView('stats')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'stats'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <BarChart4 className="w-4 h-4" />
-              Dashboard
+              <BarChart4 className="w-4 h-4 opacity-75" />
+              Analytics
             </button>
             <button
               onClick={() => setActiveView('settings')}
-              className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex items-center gap-2.5 w-full px-3 py-2 text-xs tracking-wide transition-all cursor-pointer rounded-md ${
                 activeView === 'settings'
-                  ? 'bg-[var(--accent-app)]/10 text-[var(--accent-app)]'
-                  : 'hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-70 hover:opacity-100'
+                  ? 'bg-[#09090B] text-[#FFFFFF] dark:bg-[#FAFAFA] dark:text-[#09090B] font-semibold'
+                  : 'hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] opacity-75 hover:opacity-100'
               }`}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-4 h-4 opacity-75" />
               Settings
             </button>
           </nav>
         </div>
 
         {/* Footer Account Card */}
-        <div className="space-y-4 pt-4 border-t border-[#EBE7DF] dark:border-[#3F4245]">
+        <div className="space-y-3 pt-4 border-t border-[#E5E5E5] dark:border-[#27272A]">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#FAF9F6] dark:bg-[#323437] border border-[#EBE7DF] dark:border-[#3F4245] flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 border border-[#E5E5E5] dark:border-[#27272A] flex items-center justify-center font-bold text-xs shrink-0 rounded-md bg-[#FAFAFA] dark:bg-[#18181B]">
                 {activeProfile.name.substring(0, 2).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold truncate leading-none">{activeProfile.name}</p>
-                <p className="text-[9px] opacity-40 mt-1 uppercase font-bold tracking-wider leading-none">Local Profile</p>
+                <p className="text-xs font-bold truncate leading-none">{activeProfile.name}</p>
+                <p className="text-[10px] opacity-50 mt-1 leading-none">ID: #{activeProfile.id}</p>
               </div>
             </div>
             
             {/* Quick theme toggler */}
             <button
               onClick={handleToggleTheme}
-              className="p-1.5 rounded hover:bg-[#FAF9F6] dark:hover:bg-[#323437] opacity-60 hover:opacity-100 transition-all cursor-pointer"
-              title="Toggle Theme"
+              className="p-1 border border-[#E5E5E5] dark:border-[#27272A] opacity-70 hover:opacity-100 hover:bg-[#F4F4F5] dark:hover:bg-[#18181B] transition-all cursor-pointer"
+              title="Toggle Mode"
             >
               {activeProfile.settings.theme === 'dark' ? (
-                <Sun className="w-3.5 h-3.5 text-[var(--accent-app)]" />
+                <Sun className="w-3.5 h-3.5" />
               ) : (
                 <Moon className="w-3.5 h-3.5" />
               )}
@@ -308,16 +317,16 @@ export default function App() {
 
           <button
             onClick={handleSwitchProfile}
-            className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium text-red-500 hover:bg-red-500/10 transition-all cursor-pointer"
+            className="flex items-center gap-2 w-full px-2 py-1.5 border border-[#E5E5E5] dark:border-[#27272A] text-[10px] font-mono uppercase tracking-widest opacity-60 hover:opacity-100 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30 transition-all cursor-pointer"
           >
-            <LogOut className="w-3.5 h-3.5" />
-            Switch Profiles
+            <LogOut className="w-3 h-3" />
+            DISCONNECT OPERATOR
           </button>
         </div>
       </aside>
 
       {/* Main View Area */}
-      <main className="flex-1 overflow-y-auto px-8 py-4">
+      <main className="flex-1 overflow-y-auto px-8 py-6 bg-[#FFFFFF] dark:bg-[#09090B]">
         {activeView === 'tutorial' && <TutorialGuide />}
         
         {activeView === 'lessons' && (
@@ -393,31 +402,31 @@ export default function App() {
 
       {/* Placement test level recommendation Modal */}
       {showPlacementModal && placementResults && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#FFFFFF] dark:bg-[#2C2E30] border border-[#EBE7DF] dark:border-[#3F4245] rounded-xl p-8 shadow-lg text-center animate-fade-in text-[#2E2C29] dark:text-[#D1D2D3]">
-            <Award className="w-12 h-12 text-[var(--accent-app)] mx-auto mb-3" />
-            <h2 className="text-lg font-semibold tracking-wide">Assessment Completed!</h2>
-            <p className="text-xs opacity-50 mb-6">Here are your starting stats:</p>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 font-mono">
+          <div className="w-full max-w-md bg-[#FFFFFF] dark:bg-[#121215] border border-[#E5E5E5] dark:border-[#27272A] p-6 shadow-xl text-center text-[#09090B] dark:text-[#FAFAFA]">
+            <Award className="w-8 h-8 text-[#09090B] dark:text-[#FAFAFA] mx-auto mb-3 opacity-80" />
+            <h2 className="text-sm font-bold uppercase tracking-widest">[ ASSESSMENT_COMPLETE ]</h2>
+            <p className="text-[10px] opacity-50 mb-6 uppercase tracking-wider">DIAGNOSTIC METRICS GENERATED</p>
 
             <div className="grid grid-cols-2 gap-3 mb-6">
-              <div className="p-3 bg-[#FAF9F6] dark:bg-[#323437] border border-[#EBE7DF] dark:border-[#3F4245] rounded-lg">
-                <p className="text-xl font-bold text-[var(--accent-app)]">{placementResults.wpm}</p>
-                <p className="text-[9px] uppercase font-bold tracking-wider opacity-40">Speed WPM</p>
+              <div className="p-3 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent">
+                <p className="text-2xl font-bold font-mono">{placementResults.wpm}</p>
+                <p className="text-[9px] uppercase font-bold tracking-widest opacity-40">SPEED // WPM</p>
               </div>
-              <div className="p-3 bg-[#FAF9F6] dark:bg-[#323437] border border-[#EBE7DF] dark:border-[#3F4245] rounded-lg">
-                <p className="text-xl font-bold text-emerald-500">{placementResults.accuracy}%</p>
-                <p className="text-[9px] uppercase font-bold tracking-wider opacity-40">Accuracy</p>
+              <div className="p-3 border border-[#E5E5E5] dark:border-[#27272A] bg-transparent">
+                <p className="text-2xl font-bold font-mono">{placementResults.accuracy}%</p>
+                <p className="text-[9px] uppercase font-bold tracking-widest opacity-40">ACCURACY // %</p>
               </div>
             </div>
 
-            <div className="bg-[var(--accent-app)]/10 border border-[var(--accent-app)]/20 rounded-lg p-4.5 mb-6 text-left">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--accent-app)] block mb-1">
-                Level Recommendation
+            <div className="border border-[#E5E5E5] dark:border-[#27272A] p-4 mb-6 text-left bg-transparent">
+              <span className="text-[9px] font-bold uppercase tracking-widest opacity-50 block mb-1">
+                RECOMMENDED_LEVEL
               </span>
-              <p className="text-sm font-semibold">
-                We recommend starting as: <span className="underline decoration-[var(--accent-app)] decoration-2">{placementResults.level}</span>
+              <p className="text-xs font-bold uppercase tracking-wider">
+                EVALUATION: <span className="underline decoration-1 underline-offset-4">{placementResults.level}</span>
               </p>
-              <p className="text-[10px] opacity-65 mt-1.5 leading-relaxed">
+              <p className="text-[10px] opacity-65 mt-2 leading-relaxed font-mono">
                 {placementResults.level === 'Beginner' && "Focus on home row key drills (Chapter 1) to establish touch-typing foundations."}
                 {placementResults.level === 'Intermediate' && "Practice bottom row and capitals (Chapters 2-3) to master full keyboard coverage."}
                 {placementResults.level === 'Advanced' && "Challenge yourself with custom text blocks and symbol sets to optimize your speed."}
@@ -432,9 +441,9 @@ export default function App() {
                   setActiveStep(null);
                   setActiveSessionType(null);
                 }}
-                className="flex items-center justify-center gap-1.5 px-4.5 py-2.5 rounded-lg bg-[var(--accent-app)] text-white font-semibold text-xs hover:opacity-95 transition-all cursor-pointer shadow-sm"
+                className="flex items-center justify-center gap-1.5 px-4 py-2 border border-[#09090B] dark:border-[#FAFAFA] bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all cursor-pointer"
               >
-                Go to Lessons
+                PROCEED TO LESSONS
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
