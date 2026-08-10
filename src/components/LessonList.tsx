@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 import { useState, useEffect } from 'react';
 import { Play, CheckCircle2, Lock, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { lessonsData, LessonChapter, LessonStep } from '../utils/lessonsData';

@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 const fs = require('fs');
 const path = require('path');
 const initSqlJs = require('sql.js');

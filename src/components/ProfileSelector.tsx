@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 import React, { useState, useEffect } from 'react';
 import { UserPlus, Loader2 } from 'lucide-react';
 import { Profile } from '../types/electron';
@@ -66,19 +67,22 @@ export default function ProfileSelector({ onSelectProfile }: ProfileSelectorProp
         <div className="flex items-center justify-between border-b border-[#E5E5E5] dark:border-[#27272A] pb-4 mb-6">
           <div className="flex items-center gap-2">
             <span className="status-dot"></span>
-            <span className="text-xs font-semibold text-neutral-500 font-sans">v2.4 System Ready</span>
+            <span className="text-xs font-semibold text-neutral-500 font-sans">v1.1.0 System Ready</span>
           </div>
           <span className="text-xs font-sans opacity-50 font-medium">User Profiles</span>
         </div>
 
         {/* App Title Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-light tracking-tight mb-1 font-mono">
-            I<span className="font-bold underline decoration-1 underline-offset-4">TYPE</span>
-          </h1>
-          <p className="text-xs text-neutral-500 font-sans tracking-wide">
-            Touch Typing Practice & Learning Engine
-          </p>
+        <div className="mb-6 flex items-center gap-3.5">
+          <img src="/LOGO.png" alt="Itype Logo" className="w-12 h-12 object-contain rounded-lg border border-[#E5E5E5] dark:border-[#27272A] p-1 bg-[#FAFAFA] dark:bg-[#18181B] shadow-sm" />
+          <div>
+            <h1 className="text-3xl font-light tracking-tight mb-0.5 font-mono">
+              I<span className="font-bold underline decoration-1 underline-offset-4">TYPE</span>
+            </h1>
+            <p className="text-xs text-neutral-500 font-sans tracking-wide">
+              Touch Typing Practice & Learning Engine
+            </p>
+          </div>
         </div>
 
         {profiles.length > 0 ? (

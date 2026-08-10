@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {

@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 export interface ProfileSettings {
   theme: 'light' | 'dark';
   layout: 'qwerty' | 'dvorak' | 'colemak';

@@ -43,10 +43,12 @@
     "files": [
       "dist/**/*",
       "main/**/*",
+      "logo/**/*",
       "package.json"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "logo/LOGO.png"
     }
   }
 }

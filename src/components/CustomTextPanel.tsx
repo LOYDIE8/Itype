@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 import { useState, useEffect } from 'react';
 import { FileText, Link, Trash2, Play, Loader2, Info, Upload, Layers } from 'lucide-react';
 import { CustomText } from '../types/electron';

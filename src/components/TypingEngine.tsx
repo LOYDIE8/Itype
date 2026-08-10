@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 import { useState, useEffect, useRef } from 'react';
 import { Play, X, Award, ArrowRight, HelpCircle } from 'lucide-react';
 import { useSynthAudio } from '../hooks/useSynthAudio';

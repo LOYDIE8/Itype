@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -13,7 +14,8 @@ async function createWindow() {
     minWidth: 950,
     minHeight: 680,
     show: false,
-    backgroundColor: '#FAF7F2', // Set background color matching our light-mode cream
+    icon: path.join(__dirname, '../logo/LOGO.png'),
+    backgroundColor: '#FFFFFF', // Set background color matching clean theme
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,

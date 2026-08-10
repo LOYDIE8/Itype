@@ -1,3 +1,4 @@
+// Itype v1.1.0 Final Release Build
 import { useState, useEffect } from 'react';
 import { BookOpen, BarChart4, Settings, LogOut, Moon, Sun, ArrowRight, Award, HelpCircle, RefreshCw, Upload } from 'lucide-react';
 import { Profile, Session } from './types/electron';
@@ -197,13 +198,13 @@ export default function App() {
         <div className="space-y-6">
           {/* Logo & System Badge */}
           <div className="px-2 space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="status-dot"></span>
+            <div className="flex items-center gap-2.5">
+              <img src="/LOGO.png" alt="Itype Logo" className="w-7 h-7 object-contain rounded-md" />
               <h1 className="text-xl font-light tracking-tight font-mono">
                 I<span className="font-bold underline decoration-1 underline-offset-4">TYPE</span>
               </h1>
             </div>
-            <p className="text-[10px] tracking-wider opacity-50 font-sans">v2.4 Active</p>
+            <p className="text-[10px] tracking-wider opacity-50 font-sans">v1.1.0 Active</p>
           </div>
 
           {/* Nav List */}
