@@ -1,4 +1,4 @@
-// Itype v1.1.0 Final Release Build
+// Itype v1.1.1 Final Release Build
 import React, { useState, useEffect } from 'react';
 import { UserPlus, Loader2 } from 'lucide-react';
 import { Profile } from '../types/electron';
@@ -67,7 +67,7 @@ export default function ProfileSelector({ onSelectProfile }: ProfileSelectorProp
         <div className="flex items-center justify-between border-b border-[#E5E5E5] dark:border-[#27272A] pb-4 mb-6">
           <div className="flex items-center gap-2">
             <span className="status-dot"></span>
-            <span className="text-xs font-semibold text-neutral-500 font-sans">v1.1.0 System Ready</span>
+            <span className="text-xs font-semibold text-neutral-500 font-sans">v1.1.1 System Ready</span>
           </div>
           <span className="text-xs font-sans opacity-50 font-medium">User Profiles</span>
         </div>

@@ -1,49 +1,74 @@
-# Itype ⌨️
-
-Itype is a warm, minimalist desktop typing tutor designed to help you master touch typing with a clean, distraction-free environment. Built with Vite, React, TailwindCSS, and Electron, it stores all your local profiles, typing histories, custom decks, and achievement badges inside a local SQLite database.
-
-## Preview
-
-### Distraction-Free Practice View
-A minimalist dark-mode typing interface featuring an inline progress header and a terracota orange accent cursor.
-
-![Itype Typing Practice](screenshots/practice.png)
-
-### Performance Stats & Insights
-Review session curves showing second-by-second WPM and accuracy metrics, along with an interactive problem-key heatmap overlay and an AI Typing Coach suggestion box.
-
-![Itype Performance Dashboard](screenshots/dashboard.png)
+<div align="center">
+  <img src="logo/LOGO.png" width="110" alt="Itype Logo" />
+  <h1>Itype ⌨️</h1>
+  <p><strong>Learn to Type, Your Way</strong></p>
+  <p>A modern, distraction-free touch typing practice and learning engine built for Windows.</p>
+</div>
 
 ---
 
-## Features
+## 🌟 Overview
 
-- **Distraction-Free Typing Header**: Replaces bulky panels with a tiny, low-contrast inline metadata bar (Time and word progress `14 / 85 words`) to eliminate typing anxiety.
-- **Whole-Word Wrapping**: Monkeytype-style layouts where words never get split across lines mid-word.
-- **Acoustic Synthesizer Click Profiles**: Switch between three real-time synthesized keyclick sounds:
-  - *Clicky*: Crisp Cherry MX mechanical switches.
-  - *Soft*: Warm, rounded bubble-wrap pops.
-  - *Vintage*: Heavy typewriter metal taps.
-- **Structured Progressive Stepper**: 4 Chapters (Home Row, Top Row, Bottom Row, Capitalization) with 5 progressive steps (Key, Rhythm, Word, Sentence, and Chapter Test).
-- **Chapter progression gates**: Chapter Tests enforce a strict threshold of **15 WPM and 90% Accuracy** to unlock the subsequent chapter.
-- **AI Typing Coach**: Automatically identifies your top 4 weakest characters from your cumulative SQLite heatmap and compiles a custom 30-word practice drill targeting those exact keys.
-- **Quick Practice Generator**: Build randomized word flows to test pacing. Toggle time trials (15s, 30s, 60s) or word counts (10, 25, 50, 100), with punctuation and digit-row row injections.
-- **Expanded Custom Library**: Includes coding essays (JavaScript algorithms and React HTML layout sheets) to practice brackets, semicolons, and operator reaches, plus classic literature passages (Alice in Wonderland, Sherlock Holmes).
-- **Color Accent Themes**: Instantly change color themes across Terracotta (Orange), Forest (Sage Green), Oasis (Teal), and Sand (Gold). 
-- **SQLite Persistence**: Local profiles, badge unlocks, custom deck lists, and typing speeds persist offline.
+**Itype** is an offline-first desktop application designed to guide typists from home-row fundamentals to complete keyboard mastery. Powered by Electron, React, TypeScript, TailwindCSS, and SQLite, Itype combines structured progressive lessons with custom practice imports—allowing you to practice with your own study notes, source code snippets, or literature passages.
 
 ---
 
-## Getting Started
+## 📸 Screenshots
 
-### Prerequisites
-Make sure you have Node.js installed on your machine.
+### 📚 LESSONS Curriculum & Step Progression
+*Explore 7 comprehensive chapters and 35 progressive steps with visual milestone badges.*
 
-### Installation
+![Itype Lessons Curriculum](screenshots/lesson.png)
+
+---
+
+### ⌨️ Distraction-Free Practice View
+*Clean typing canvas featuring live WPM, accuracy metrics, dynamic caret animations, and interactive keyboard finger placement maps.*
+
+![Itype Practice Interface](screenshots/practice.png)
+
+---
+
+### 📊 Performance Analytics & History
+*Analyze your second-by-second WPM progression curves, accuracy trends, and cumulative problem-key heatmaps.*
+
+![Itype Analytics & Dashboard](screenshots/analytics.png)
+
+---
+
+## ✨ Features
+
+- 🎯 **7-Chapter Progressive Curriculum**: 35 step-by-step drills taking you from home-row basics, top/bottom rows, numbers, code symbols, up to speed endurance.
+- 📝 **Custom Practice & Essays Library**: Import custom text files, paste study notes, or practice built-in literature passages and JavaScript code snippets.
+- 🎨 **Monochrome Redesign & Dark Mode Tones**: Clean aesthetic with 5 customizable dark mode background levels (*Pitch Black OLED*, *Obsidian*, *Soft Charcoal*, *Deep Slate*, and *Muted Dusk*).
+- 🔊 **WebAudio Tactile Acoustics**: Real-time synthesized keyclick audio profiles (*Cherry MX Clicky*, *Aggressive Clack*, *Bubble Pop*, and *Typewriter Bell*).
+- 🏆 **18 Achievements Matrix & Streaks**: Gamified milestone badges (*Godspeed 120+ WPM*, *Sharpshooter*, *Centurion*, *Night Owl*) and daily practice streak counters.
+- ⚡ **Universal Keyboard Navigation**: Press **Space** or **Enter** to start drills and seamlessly proceed between lessons.
+- 💾 **100% Offline SQLite Persistence**: User profiles, typing history, badges, and settings remain stored on your device.
+
+---
+
+## 🚀 Getting Started
+
+### Installation (Pre-built Windows Desktop App)
+
+1. Download **`Itype Setup 1.1.1.exe`** from the [Latest Releases](https://github.com/LOYDIE8/Itype/releases) page.
+2. Double-click the installer executable to install.
+3. Launch **Itype** and begin your practice!
+
+---
+
+### Building from Source
+
+#### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- npm package manager
+
+#### Setup Steps
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Itype.git
+   git clone https://github.com/LOYDIE8/Itype.git
    cd Itype
    ```
 
@@ -52,29 +77,24 @@ Make sure you have Node.js installed on your machine.
    npm install
    ```
 
-3. Launch the development server (browser preview):
+3. Launch development mode (Vite + Electron):
    ```bash
    npm run dev
    ```
 
-4. Launch the desktop Electron application (runs local SQLite database):
+4. Build production desktop installer package:
    ```bash
-   npm run electron
-   ```
-
-5. Build the production package:
-   ```bash
-   npm run build
+   npm run package
    ```
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Framework**: React + TypeScript
+- **Framework**: React 19 + TypeScript
 - **Styling**: TailwindCSS (v4)
-- **Desktop Container**: Electron
-- **Database**: SQLite (via sql.js client-side interface)
-- **Audio Synthesizer**: Web Audio API (Oscillators for customized keyclick acoustics)
-- **Charts**: Recharts (Timeline speed curves and accuracy charts)
+- **Desktop Runtime**: Electron
+- **Database**: SQLite (`sql.js`)
+- **Audio Synthesizer**: Web Audio API (Oscillators & noise generators)
+- **Data Visualization**: Recharts
 - **Icons**: Lucide React

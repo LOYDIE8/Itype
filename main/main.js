@@ -1,4 +1,4 @@
-// Itype v1.1.0 Final Release Build
+// Itype v1.1.1 Final Release Build
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');

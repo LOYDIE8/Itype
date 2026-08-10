@@ -1,4 +1,4 @@
-// Itype v1.1.0 Final Release Build
+// Itype v1.1.1 Final Release Build
 import { Volume2, VolumeX, Keyboard, RefreshCw, Type, Eye, ShieldAlert, Moon } from 'lucide-react';
 import { Profile } from '../types/electron';
 

@@ -1,4 +1,4 @@
-// Itype v1.1.0 Final Release Build
+// Itype v1.1.1 Final Release Build
 import { useState, useEffect } from 'react';
 import { BookOpen, BarChart4, Settings, LogOut, Moon, Sun, ArrowRight, Award, HelpCircle, RefreshCw, Upload } from 'lucide-react';
 import { Profile, Session } from './types/electron';
@@ -204,7 +204,7 @@ export default function App() {
                 I<span className="font-bold underline decoration-1 underline-offset-4">TYPE</span>
               </h1>
             </div>
-            <p className="text-[10px] tracking-wider opacity-50 font-sans">v1.1.0 Active</p>
+            <p className="text-[10px] tracking-wider opacity-50 font-sans">v1.1.1 Active</p>
           </div>
 
           {/* Nav List */}

@@ -1,4 +1,4 @@
-// Itype v1.1.0 Final Release Build
+// Itype v1.1.1 Final Release Build
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';

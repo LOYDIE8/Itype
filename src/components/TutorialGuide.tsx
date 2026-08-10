@@ -1,4 +1,4 @@
-// Itype v1.1.0 Final Release Build
+// Itype v1.1.1 Final Release Build
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Key, CheckCircle, Flame } from 'lucide-react';
 
